@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Define the Profile schema
-const doctorSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
   firstname: {
     type: String,
     trim: true,
@@ -24,6 +24,8 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-});
+},
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("Doctor", doctorSchema);
+module.exports = mongoose.model("Admin", adminSchema);
