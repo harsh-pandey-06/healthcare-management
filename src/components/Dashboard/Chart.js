@@ -14,16 +14,12 @@ const Chart = () => {
   return (
     <VictoryPie
       innerRadius={100}
-      // radius={2000}
-      // width={10000}
-      // height={10000}
-      colorScale={["tomato", "orange", "gold", "cyan", "navy"]}
+      colorScale={["#1d4ed8", "#5b21b6", "#22d3ee", "#c7d2fe"]}
       data={[
-        { x: "Cats", y: 35 },
-        { x: "Dogs", y: 40 },
-        { x: "Birds", y: 55 },
-        { x: "Birds", y: 55 },
-        { x: "Birds", y: 55 },
+        { x: "General", y: 35 },
+        { x: "Gyno", y: 40 },
+        { x: "ENT", y: 55 },
+        { x: "Scans", y: 55 },
       ]}
     />
   );

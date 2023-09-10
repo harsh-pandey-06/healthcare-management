@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 const Appointment = () => {
   return (
-    <div className="flex lg:gap-32 md:gap-16 sm:gap-8 font-normal text-black justify-start border shadow-md p-3 w-11/12 pt-2 align-baseline">
+    <div className="flex gap-8 font-normal text-black justify-between border p-3 shadow-md transition-all ease-in-out cursor-pointer hover:shadow-xl">
       <div className="flex gap-2">
         <div>Token:</div>
         <div>15</div>
@@ -33,14 +33,12 @@ const Appointment = () => {
 
       <div className="flex gap-2">
         <div>Status:</div>
-        <div className='bg-teal-200 text-center w-16 rounded-lg'>
-            In
-        </div>
+        <div className="bg-teal-200 text-center w-16 rounded-lg">In</div>
       </div>
 
       {/*  */}
     </div>
   );
-}
+};
 
-export default Appointment
+export default Appointment;
