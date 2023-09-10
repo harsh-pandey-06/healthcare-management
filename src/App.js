@@ -8,7 +8,16 @@ function App() {
   return (
     <div className="App">
       <Navbar />
+      <NewPatient></NewPatient>
       <Dashboard></Dashboard>
+      <div className='flex'>
+        <div className='w-1/5'>
+          <Sidebar />
+        </div>
+        <div>
+          <NewPatient />
+        </div>
+      </div>
     </div>
   );
 }
