@@ -2,7 +2,7 @@ import React from "react";
 
 const Appointment = () => {
   return (
-    <div className="flex gap-8 font-normal text-black justify-between border p-3 shadow-md transition-all ease-in-out cursor-pointer hover:shadow-xl">
+    <div className="flex gap-8 font-normal text-black justify-between p-3 mb-1 shadow transition-all ease-in-out cursor-pointer hover:shadow-xl">
       <div className="flex gap-2">
         <div>Token:</div>
         <div>15</div>

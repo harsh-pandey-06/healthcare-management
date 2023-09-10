@@ -29,14 +29,14 @@ const Dashboard = () => {
             <FaUserMd className="text-blue-500 text-xl" />
           </div>
         </Card>
-        <Card title="Beds Available" titleColor="bg-red-200" value={"06"}>
+        <Card title="Beds Available" titleColor="bg-red-200" value={"13"}>
           <div className="h-10 w-10 rounded-full flex justify-center items-center bg-red-100 ">
             <FaBed className="text-red-500 text-xl" />
           </div>
         </Card>
         <Card
           className="bg-blue-400"
-           title="Token Number"
+          title="Token Number"
           titleColor="bg-yellow-200"
           value={"15,10,8"}
         >
@@ -45,14 +45,14 @@ const Dashboard = () => {
           </div>
         </Card>
       </div>
-      <div className="flex mt-20 gap-10 ">
-        <div className="flex-col w-1/4 p-5 font-bold text-black text-lg ml-1 shadow">
+      <div className="flex mt-20 gap-10">
+        <div className="flex-col w-1/4 p-5 font-bold text-black text-lg ml-1 shadow rounded-md">
           Department
           <div>
             <Chart></Chart>
           </div>
         </div>
-        <div className="w-3/4 ml-1 p-5 shadow ">
+        <div className="w-3/4 ml-1 p-5 shadow rounded-md">
           <div className="font-bold text-black text-lg ">
             Lab reports to be sent (5)
           </div>
@@ -64,7 +64,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className="h-72 ml-1 p-5 border mt-5 shadow">
+      <div className="h-72 ml-1 p-5 rounded-md mt-5 shadow">
         <div className="font-bold text-black text-lg ">Appointment Queue</div>
         <div className="mt-5">
           <Appointment></Appointment>
