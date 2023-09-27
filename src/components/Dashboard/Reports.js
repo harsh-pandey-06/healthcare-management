@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react";
 
 const Reports = () => {
   return (
-    <div className="flex lg:gap-32 md:gap-16 sm:gap-8 font-normal text-black justify-start border shadow-md p-3 w-11/12 pt-2 align-baseline">
+    <div className="flex gap-8 font-normal text-black justify-between mb-1 shadow transition-all ease-in-out cursor-pointer hover:shadow-xl p-3">
       <div>R1254</div>
       <div>Lungs X-ray</div>
       <div>X-ray.pdf</div>
@@ -12,6 +12,6 @@ const Reports = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Reports
+export default Reports;
