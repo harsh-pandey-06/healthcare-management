@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
+const mongoose = require('mongoose');
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
