@@ -120,3 +120,20 @@ exports.login = async (req, res) => {
     })
   }
 }
+
+exports.getAdminDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const adminDetails = await User.findById(id);
+    res.status(200).json({
+      success: true,
+      message: "Admin data fetched successfully",
+      data: adminDetails,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
