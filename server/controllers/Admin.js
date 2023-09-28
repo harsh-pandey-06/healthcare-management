@@ -122,6 +122,7 @@ exports.login = async (req, res) => {
   }
 }
 
+<<<<<<< HEAD
 exports.updateAdmin = async (req, res) => {
   try {
     const {
@@ -157,6 +158,21 @@ exports.updateAdmin = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: error.message,
+=======
+exports.getAdminDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const adminDetails = await User.findById(id);
+    res.status(200).json({
+      success: true,
+      message: "Admin data fetched successfully",
+      data: adminDetails,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+>>>>>>> 17dfdd4b8da5787c68f2ce00cd4bd1ae38296bd0
     })
   }
 }
