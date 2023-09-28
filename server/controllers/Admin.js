@@ -1,7 +1,6 @@
 const bcrypt = require("bcrypt");
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -122,7 +121,6 @@ exports.login = async (req, res) => {
   }
 }
 
-<<<<<<< HEAD
 exports.updateAdmin = async (req, res) => {
   try {
     const {
@@ -133,9 +131,6 @@ exports.updateAdmin = async (req, res) => {
       id
     } = req.body
 
-    // Find the profile by id
-    const AdminDetails = await Admin.findById(id)
-
     const admin = await Admin.findByIdAndUpdate(id, {
       firstName,
       lastName,
@@ -143,10 +138,6 @@ exports.updateAdmin = async (req, res) => {
       mobile
     })
     await admin.save()
-
-
-
-
 
     return res.json({
       success: true,
@@ -158,7 +149,10 @@ exports.updateAdmin = async (req, res) => {
     return res.status(500).json({
       success: false,
       error: error.message,
-=======
+    })
+  }
+}
+
 exports.getAdminDetails = async (req, res) => {
   try {
     const id = req.user.id;
@@ -172,7 +166,6 @@ exports.getAdminDetails = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
->>>>>>> 17dfdd4b8da5787c68f2ce00cd4bd1ae38296bd0
     })
   }
 }
