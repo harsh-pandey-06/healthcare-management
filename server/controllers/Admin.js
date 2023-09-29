@@ -169,3 +169,25 @@ exports.getAdminDetails = async (req, res) => {
     })
   }
 }
+exports.deleteAdminDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const AdminId = await Admin.findById({_id:id});
+    if (!AdminId) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      })
+    } 
+    await Admin.findByIdAndDelete({_id:id});
+    res.status(200).json({
+      success: true,
+      message: "Admin data deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

@@ -3,8 +3,7 @@ const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 require("dotenv").config();
-
-
+const Patient=require("../models/patient")
 
 
 exports.updateAdmin = async (req, res) => {
@@ -62,3 +61,26 @@ exports.getPatientDetails = async (req, res) => {
     })
   }
 }
+
+exports.deleteDoctorDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const Patientdetails = await Patient.findById({ _id: id });
+    if (!Patientdetails) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
+    await Patient.findByIdAndDelete({ _id: id });
+    res.status(200).json({
+      success: true,
+      message: "Patient data deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

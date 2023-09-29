@@ -2,6 +2,7 @@ const bcrypt = require("bcrypt");
 const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
+const Doctor=require("../models/doctor")
 require("dotenv").config();
 
 
@@ -63,3 +64,25 @@ exports.getDoctorDetails = async (req, res) => {
     })
   }
 }
+exports.deleteDoctorDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const Doctordetails = await Doctor.findById({ _id: id });
+    if (!Doctordetails) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      });
+    }
+    await Doctor.findByIdAndDelete({ _id: id });
+    res.status(200).json({
+      success: true,
+      message: "Doctor data deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
