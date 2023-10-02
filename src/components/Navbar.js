@@ -6,7 +6,7 @@ import { FaHeartPulse } from 'react-icons/fa6';
 
 const Navbar = () => {
     return (
-        <div className='shadow'>
+        <div className='shadow sticky top-0 z-[100] bg-white'>
             <div className='w-5/6 mx-auto py-5 items-center flex justify-between'>
                 <div className='flex gap-10 items-center'>
                     <div className='text-blue-500 font-bold text-2xl flex gap-2 items-center'>

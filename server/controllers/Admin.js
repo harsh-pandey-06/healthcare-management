@@ -1,6 +1,6 @@
-const bcrypt = require("bcrypt");
+// const bcrypt = require("bcrypt");
 const Admin = require("../models/Admin");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -120,3 +120,124 @@ exports.login = async (req, res) => {
     })
   }
 }
+
+exports.updateAdmin = async (req, res) => {
+  try {
+    const {
+      firstName = "",
+      lastName = "",
+      email = "",
+      mobile = "",
+      id
+    } = req.body
+
+    const admin = await Admin.findByIdAndUpdate(id, {
+      firstName,
+      lastName,
+      email,
+      mobile
+    })
+    await admin.save()
+
+    return res.json({
+      success: true,
+      message: "Profile updated successfully",
+      updatedAdminDetails,
+    })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({
+      success: false,
+      error: error.message,
+    })
+  }
+}
+
+exports.getAdminDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const adminDetails = await User.findById(id);
+    res.status(200).json({
+      success: true,
+      message: "Admin data fetched successfully",
+      data: adminDetails,
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    })
+  }
+}
+exports.deleteAdminDetails = async (req, res) => {
+  try {
+    const id = req.user.id;
+    const AdminId = await Admin.findById({_id:id});
+    if (!AdminId) {
+      return res.status(404).json({
+        success: false,
+        message: "Admin not found",
+      })
+    } 
+    await Admin.findByIdAndDelete({_id:id});
+    res.status(200).json({
+      success: true,
+      message: "Admin data deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.createAdmin = async (req, res) => {
+  try {
+    // Get all required fields from request body
+    const {
+      firstname,
+      lastname,
+      mobile,
+      email,
+      password
+    } = req.body;
+
+    // Check if any of the required fields are missing
+    if (
+      !firstname ||
+      !lastname ||
+      !email ||
+      !password
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'All Fields are Mandatory',
+      });
+    }
+
+    // Create a new admin with the given details
+    const newAdmin = await Admin.create({
+      firstname,
+      lastname,
+      mobile,
+      email,
+      password
+    });
+
+    // Return the new admin and a success message
+    res.status(200).json({
+      success: true,
+      data: newAdmin,
+      message: 'Admin Created Successfully',
+    });
+  } catch (error) {
+    // Handle any errors that occur during the creation of the admin
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create Admin',
+      error: error.message,
+    });
+  }
+};
