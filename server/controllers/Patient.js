@@ -1,31 +1,176 @@
 const bcrypt = require("bcrypt");
-const Admin = require("../models/Admin");
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 require("dotenv").config();
 const Patient=require("../models/patient")
 
 
-exports.updateAdmin = async (req, res) => {
+exports.signup = async (req, res) => {
+    try {
+      const {
+        firstName,
+        lastName,
+        mobile,
+        email,
+        password,
+        confirmPassword,
+        patientId,
+        address,
+        gender,
+        dob,
+        state,
+        city,
+        pincode,
+
+      } = req.body
+  
+      if (
+        !firstName ||
+        !lastName ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        !mobile ||
+        !patientId ||
+        !address ||
+        !gender ||
+        !dob ||
+        !state ||
+        !city ||
+        !pincode
+      ) {
+        return res.status(403).send({
+          success: false,
+          message: "All Fields are required",
+        })
+      }
+  
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password and Confirm Password do not match. Please try again.",
+        })
+      }
+  
+      const existingUser = await Patient.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Patient account already exists with this email. Please sign in to continue.",
+        })
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const user = await Patient.create({
+        firstName,
+        lastName,
+        email,
+        mobile,
+        patientId,
+        address,
+        gender,
+        dob,
+        state,
+        city,
+        pincode,
+        password: hashedPassword,
+      })
+  
+      return res.status(200).json({
+        success: true,
+        user,
+        message: "Patient created successfully",
+      })
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Patient account cannot be created. Please try again.",
+      })
+    }
+  }
+  
+  exports.login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.status(400).json({
+          success: false,
+          message: `Please Fill up All the Required Fields`,
+        })
+      }
+  
+      const user = await Patient.findOne({ email });
+  
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: `Patient is not registered.`,
+        })
+      }
+  
+      if (await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign(
+          { email: user.email, id: user._id, role: user.role },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "24h",
+          }
+        )
+  
+        const options = {
+          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+        }
+        res.cookie("token", token, options).status(200).json({
+          success: true,
+          token,
+          message: `Patient Login Success`,
+        })
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: `Password is incorrect`,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        success: false,
+        message: `Login Failure. Please Try Again`,
+      })
+    }
+  }
+
+exports.updatePatient = async (req, res) => {
   try {
     const {
       firstName = "",
       lastName = "",
       email = "",
       mobile = "",
+      patientId="",
+      gender ="",
+      dob="",
+      state="",
+      city="",
+      pincode="",
       id
     } = req.body
 
     // Find the profile by id
-    const AdminDetails = await Admin.findById(id)
+    const PatientDetails = await Patient.findById(id)
 
-    const admin = await Admin.findByIdAndUpdate(id, {
+    const patient = await Patient.findByIdAndUpdate(id, {
       firstName,
       lastName,
       email,
       mobile
     })
-    await admin.save()
+    await patient.save()
 
 
 
@@ -34,7 +179,7 @@ exports.updateAdmin = async (req, res) => {
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedAdminDetails,
+      updatedPatientDetails,
     })
   } catch (error) {
     console.log(error)
@@ -51,7 +196,7 @@ exports.getPatientDetails = async (req, res) => {
     const patientDetails = await User.findById(id);
     res.status(200).json({
       success: true,
-      message: "Admin data fetched successfully",
+      message: "Patient data fetched successfully",
       data: patientDetails,
     })
   } catch (error) {
@@ -62,14 +207,14 @@ exports.getPatientDetails = async (req, res) => {
   }
 }
 
-exports.deleteDoctorDetails = async (req, res) => {
+exports.deletePatientDetails = async (req, res) => {
   try {
     const id = req.user.id;
     const Patientdetails = await Patient.findById({ _id: id });
     if (!Patientdetails) {
       return res.status(404).json({
         success: false,
-        message: "Admin not found",
+        message: "Patient not found",
       });
     }
     await Patient.findByIdAndDelete({ _id: id });
