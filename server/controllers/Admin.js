@@ -191,3 +191,53 @@ exports.deleteAdminDetails = async (req, res) => {
     });
   }
 };
+
+exports.createAdmin = async (req, res) => {
+  try {
+    // Get all required fields from request body
+    const {
+      firstname,
+      lastname,
+      mobile,
+      email,
+      password
+    } = req.body;
+
+    // Check if any of the required fields are missing
+    if (
+      !firstname ||
+      !lastname ||
+      !email ||
+      !password
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'All Fields are Mandatory',
+      });
+    }
+
+    // Create a new admin with the given details
+    const newAdmin = await Admin.create({
+      firstname,
+      lastname,
+      mobile,
+      email,
+      password
+    });
+
+    // Return the new admin and a success message
+    res.status(200).json({
+      success: true,
+      data: newAdmin,
+      message: 'Admin Created Successfully',
+    });
+  } catch (error) {
+    // Handle any errors that occur during the creation of the admin
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create Admin',
+      error: error.message,
+    });
+  }
+};

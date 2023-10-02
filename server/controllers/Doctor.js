@@ -188,7 +188,8 @@ exports.getDoctorDetails = async (req, res) => {
       message: error.message,
     })
   }
-}
+};
+
 exports.deleteDoctorDetails = async (req, res) => {
   try {
     const id = req.user.id;
@@ -208,6 +209,62 @@ exports.deleteDoctorDetails = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+exports.createDoctor = async (req, res) => {
+  try {
+    // Get all required fields from request body
+    const {
+      doctorId,
+      firstname,
+      lastname,
+      mobile,
+      address,
+      email,
+      password
+    } = req.body;
+
+    // Check if any of the required fields are missing
+    if (
+      !doctorId ||
+      !firstname ||
+      !lastname ||
+      !mobile ||
+      !email ||
+      !password
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: 'All Fields are Mandatory',
+      });
+    }
+
+    // Create a new doctor with the given details
+    const newDoctor = await Doctor.create({
+      doctorId,
+      firstname,
+      lastname,
+      mobile,
+      address,
+      email,
+      password
+    });
+
+    // Return the new doctor and a success message
+    res.status(200).json({
+      success: true,
+      data: newDoctor,
+      message: 'Doctor Created Successfully',
+    });
+  } catch (error) {
+    // Handle any errors that occur during the creation of the doctor
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to create Doctor',
+      error: error.message,
     });
   }
 };

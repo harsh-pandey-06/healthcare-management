@@ -229,3 +229,78 @@ exports.deletePatientDetails = async (req, res) => {
     });
   }
 };
+
+exports.createPatient = async (req, res) => {
+  try {
+    // Get user ID from request object
+    // const userId = req.user.id;
+
+    // Get all required fields from request body
+    let {
+      patientId,
+      firstname,
+      lastname,
+      gender,
+      dateOfBirth,
+      mobile,
+      address,
+      state,
+      city,
+      pincode,
+      email,
+      password
+    } = req.body;
+
+    // Check if any of the required fields are missing
+    if (
+      !patientId ||
+      !firstname ||
+      !lastname ||
+      !gender ||
+      !dateOfBirth ||
+      !mobile ||
+      !address ||
+      !state ||
+      !city ||
+      !pincode ||
+      !email ||
+      !password
+    ) {
+      return res.status(400).json({
+        success: false,
+        message: "All Fields are Mandatory",
+      });
+    }
+
+    // Create a new patient with the given details
+    const newPatient = await Patient.create({
+      patientId,
+      firstname,
+      lastname,
+      gender,
+      dateOfBirth,
+      mobile,
+      address,
+      state,
+      city,
+      pincode,
+      email,
+      password
+    });
+
+    // Return the new patient and a success message
+    res.status(200).json({
+      success: true,
+      data: newPatient,
+      message: "Patient Created Successfully",
+    });
+  } catch (error) {
+    // Handle any errors that occur during the creation of the patient
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create Patient",
+      error: error.message,
+    });
+  }
+};
