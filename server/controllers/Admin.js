@@ -6,8 +6,8 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
   try {
     const {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       mobile,
       email,
       password,
@@ -15,8 +15,8 @@ exports.signup = async (req, res) => {
     } = req.body
 
     if (
-      !firstName ||
-      !lastName ||
+      !firstname ||
+      !lastname ||
       !email ||
       !password ||
       !confirmPassword ||
@@ -47,8 +47,8 @@ exports.signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await Admin.create({
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
       mobile,
       password: hashedPassword,
@@ -90,7 +90,7 @@ exports.login = async (req, res) => {
 
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign(
-        { email: user.email, id: user._id, role: user.role },
+        { email: user.email, id: user._id},
         process.env.JWT_SECRET,
         {
           expiresIn: "24h",
@@ -124,25 +124,25 @@ exports.login = async (req, res) => {
 exports.updateAdmin = async (req, res) => {
   try {
     const {
-      firstName = "",
-      lastName = "",
+      firstname = "",
+      lastname = "",
       email = "",
       mobile = "",
       id
     } = req.body
 
     const admin = await Admin.findByIdAndUpdate(id, {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
       mobile
     })
     await admin.save()
-
+    const AdminDetails = await Admin.findById(id)
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedAdminDetails,
+      AdminDetails,
     })
   } catch (error) {
     console.log(error)
@@ -171,15 +171,15 @@ exports.getAdminDetails = async (req, res) => {
 }
 exports.deleteAdminDetails = async (req, res) => {
   try {
-    const id = req.user.id;
-    const AdminId = await Admin.findById({_id:id});
+    const id = req.body;
+    const AdminId = await Admin.findById(id);
     if (!AdminId) {
       return res.status(404).json({
         success: false,
         message: "Admin not found",
       })
     } 
-    await Admin.findByIdAndDelete({_id:id});
+    await Admin.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
       message: "Admin data deleted successfully",

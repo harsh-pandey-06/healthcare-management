@@ -8,8 +8,8 @@ require("dotenv").config();
 exports.signup = async (req, res) => {
     try {
       const {
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         mobile,
         email,
         password,
@@ -19,8 +19,8 @@ exports.signup = async (req, res) => {
       } = req.body
   
       if (
-        !firstName ||
-        !lastName ||
+        !firstname ||
+        !lastname ||
         !email ||
         !password ||
         !confirmPassword ||
@@ -53,8 +53,8 @@ exports.signup = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       const user = await Doctor.create({
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         email,
         mobile,
         doctorId,
@@ -132,8 +132,8 @@ exports.signup = async (req, res) => {
 exports.updateDoctor = async (req, res) => {
   try {
     const {
-      firstName = "",
-      lastName = "",
+      firstname = "",
+      lastname = "",
       email = "",
       mobile = "",
       doctorId="",
@@ -142,26 +142,26 @@ exports.updateDoctor = async (req, res) => {
     } = req.body
 
     // Find the profile by id
-    const DoctorDetails = await Doctor.findById(id)
+    // const DoctorDetails = await Doctor.findById(id)
 
     const doctor = await Doctor.findByIdAndUpdate(id, {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
       mobile,
       doctorId,
       address
     })
-    await doctor.save()
+    await doctor.save();
 
 
 
-
+    const DoctorDetails = await Doctor.findById(id)
 
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedDoctorDetails,
+      DoctorDetails,
     })
   } catch (error) {
     console.log(error)
@@ -192,15 +192,15 @@ exports.getDoctorDetails = async (req, res) => {
 
 exports.deleteDoctorDetails = async (req, res) => {
   try {
-    const id = req.user.id;
-    const Doctordetails = await Doctor.findById({ _id: id });
+    const id = req.body.id;
+    const Doctordetails = await Doctor.findById(id );
     if (!Doctordetails) {
       return res.status(404).json({
         success: false,
         message: "Doctor not found",
       });
     }
-    await Doctor.findByIdAndDelete({ _id: id });
+    await Doctor.findByIdAndDelete(id );
     res.status(200).json({
       success: true,
       message: "Doctor data deleted successfully",

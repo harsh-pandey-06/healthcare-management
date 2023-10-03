@@ -8,8 +8,8 @@ const Patient=require("../models/patient")
 exports.signup = async (req, res) => {
     try {
       const {
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         mobile,
         email,
         password,
@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
         patientId,
         address,
         gender,
-        dob,
+        dateOfBirth,
         state,
         city,
         pincode,
@@ -25,8 +25,8 @@ exports.signup = async (req, res) => {
       } = req.body
   
       if (
-        !firstName ||
-        !lastName ||
+        !firstname ||
+        !lastname ||
         !email ||
         !password ||
         !confirmPassword ||
@@ -34,7 +34,7 @@ exports.signup = async (req, res) => {
         !patientId ||
         !address ||
         !gender ||
-        !dob ||
+        !dateOfBirth ||
         !state ||
         !city ||
         !pincode
@@ -64,14 +64,14 @@ exports.signup = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       const user = await Patient.create({
-        firstName,
-        lastName,
+        firstname,
+        lastname,
         email,
         mobile,
         patientId,
         address,
         gender,
-        dob,
+        dateOfBirth,
         state,
         city,
         pincode,
@@ -102,7 +102,7 @@ exports.signup = async (req, res) => {
           message: `Please Fill up All the Required Fields`,
         })
       }
-  
+      // console.log("checking user exists");
       const user = await Patient.findOne({ email });
   
       if (!user) {
@@ -111,7 +111,7 @@ exports.signup = async (req, res) => {
           message: `Patient is not registered.`,
         })
       }
-  
+      // console.log("password match");
       if (await bcrypt.compare(password, user.password)) {
         const token = jwt.sign(
           { email: user.email, id: user._id, role: user.role },
@@ -120,7 +120,7 @@ exports.signup = async (req, res) => {
             expiresIn: "24h",
           }
         )
-  
+        // console.log("check 3");
         const options = {
           expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
           httpOnly: true,
@@ -148,13 +148,13 @@ exports.signup = async (req, res) => {
 exports.updatePatient = async (req, res) => {
   try {
     const {
-      firstName = "",
-      lastName = "",
+      firstname = "",
+      lastname = "",
       email = "",
       mobile = "",
       patientId="",
       gender ="",
-      dob="",
+      dateOfBirth="",
       state="",
       city="",
       pincode="",
@@ -162,16 +162,22 @@ exports.updatePatient = async (req, res) => {
     } = req.body
 
     // Find the profile by id
-    const PatientDetails = await Patient.findById(id)
 
     const patient = await Patient.findByIdAndUpdate(id, {
-      firstName,
-      lastName,
+      firstname,
+      lastname,
       email,
-      mobile
+      mobile,
+      patientId,
+      gender ,
+      dateOfBirth,
+      state,
+      city,
+      pincode,
     })
     await patient.save()
 
+    const PatientDetails = await Patient.findById(id)
 
 
 
@@ -179,7 +185,7 @@ exports.updatePatient = async (req, res) => {
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedPatientDetails,
+      PatientDetails,
     })
   } catch (error) {
     console.log(error)
@@ -209,15 +215,15 @@ exports.getPatientDetails = async (req, res) => {
 
 exports.deletePatientDetails = async (req, res) => {
   try {
-    const id = req.user.id;
-    const Patientdetails = await Patient.findById({ _id: id });
+    const id = req.body.id;
+    const Patientdetails = await Patient.findById(id);
     if (!Patientdetails) {
       return res.status(404).json({
         success: false,
         message: "Patient not found",
       });
     }
-    await Patient.findByIdAndDelete({ _id: id });
+    await Patient.findByIdAndDelete(id);
     res.status(200).json({
       success: true,
       message: "Patient data deleted successfully",
