@@ -3,6 +3,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 import { GrNotification } from 'react-icons/gr';
 import { HiOutlineSearch } from 'react-icons/hi';
 import { FaHeartPulse } from 'react-icons/fa6';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
     return (
@@ -24,15 +25,15 @@ const Navbar = () => {
                     <button className='border p-3 rounded-full mx-5'>
                         <GrNotification />
                     </button>
-                    <button type="button" className='border border-blue-500 cursor-pointer text-blue-500 px-6 py-3 rounded-lg text-sm font-medium'>
+                    <Link to="/patient/new" type="button" className='border border-blue-500 cursor-pointer text-blue-500 px-6 py-3 rounded-lg text-sm font-medium'>
                         New Patient
-                    </button>
-                    <button type="button" className='bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
+                    </Link>
+                    <Link to="/appointment/new" type="button" className='bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
                         <AiOutlinePlus />
                         <span>
                             Appointment
                         </span>
-                    </button>
+                    </Link>
                 </div>
             </div>
         </div>

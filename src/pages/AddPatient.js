@@ -1,8 +1,9 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import NewPatient from '../components/NewPatient';
 
-const Patient = () => {
+const AddPatient = () => {
     return (
         <div>
             <Navbar />
@@ -11,11 +12,11 @@ const Patient = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    Patient
+                    <NewPatient />
                 </div>
             </div>
         </div>
     )
 }
 
-export default Patient
+export default AddPatient
