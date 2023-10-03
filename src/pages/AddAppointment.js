@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import NewAppointment from '../components/NewAppointment';
+import NewAppointment from '../components/Appointment/NewAppointment';
 
 const AddAppointment = () => {
     return (

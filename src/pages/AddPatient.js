@@ -1,7 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import NewPatient from '../components/NewPatient';
+import NewPatient from '../components/Patient/NewPatient';
 
 const AddPatient = () => {
     return (

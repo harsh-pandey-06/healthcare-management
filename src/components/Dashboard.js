@@ -3,7 +3,7 @@ import { useState } from "react";
 import Card from "./Dashboard/Card";
 import Reports from "./Dashboard/Reports";
 import Chart from "./Dashboard/Chart";
-import Appointment from "./Dashboard/Appointment";
+import AppointmentQueue from "./Dashboard/AppointmentQueue";
 import { BiSolidUser } from "react-icons/bi";
 import { FaUserMd, FaBed, FaNotesMedical } from "react-icons/fa";
 const Dashboard = () => {
@@ -67,10 +67,10 @@ const Dashboard = () => {
       <div className="h-72 ml-1 p-5 rounded-md mt-5 shadow">
         <div className="font-bold text-black text-lg ">Appointment Queue</div>
         <div className="mt-5">
-          <Appointment></Appointment>
-          <Appointment></Appointment>
-          <Appointment></Appointment>
-          <Appointment></Appointment>
+          <AppointmentQueue />
+          <AppointmentQueue />
+          <AppointmentQueue />
+          <AppointmentQueue />
         </div>
       </div>
     </div>
