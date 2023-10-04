@@ -95,6 +95,8 @@ exports.signup = async (req, res) => {
   exports.login = async (req, res) => {
     try {
       const { email, password } = req.body;
+      console.log("Email: ",email);
+      console.log("password: ",password);
   
       if (!email || !password) {
         return res.status(400).json({
@@ -106,7 +108,7 @@ exports.signup = async (req, res) => {
       const user = await Patient.findOne({ email });
   
       if (!user) {
-        return res.status(401).json({
+        return res.status(200).json({
           success: false,
           message: `Patient is not registered.`,
         })

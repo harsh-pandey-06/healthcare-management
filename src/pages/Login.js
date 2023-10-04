@@ -3,9 +3,56 @@ import bgimage from "../assets/iitgbg.jpeg";
 import iitglogo from "../assets/iitg_logo.jpg";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from 'react-router-dom';
-const Login = ({props}) => {
+import axios from "axios"
+
+const Login = (props) => {
     // const role=props.role
+  const { role,setRole}=props;
+console.log(role);
     const [showPassword,setshowPassword]=useState(false);
+
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    // const [loading, setLoading] = useState(false);
+  
+    // const history = useHistory();
+  
+    const submitHandler = async () => {
+      // setLoading(true);
+      if (!email || !password) {
+        
+        // setLoading(false);
+        return;
+      }
+  
+      // console.log(email, password);
+      try {
+        // const config = {
+        //   headers: {
+        //     "Content-type": "application/json",
+        //   },
+        // };
+  
+        // const { data } = await axios.post(
+        //   "/api/v1/auth/patient/login",
+        //   { email, password },
+        //   // config
+        // );
+        const data={email, password};
+        const response=await axios.post(`http://localhost:4000/api/v1/auth/${role}/login`,data);
+        console.log(response.data);
+        // console.log(JSON.stringify(data));
+        // localStorage.setItem("userInfo", JSON.stringify(data));
+        // setLoading(false);
+        // history.push("/chats");
+      } catch (error) {
+        
+        // setLoading(false);
+      }
+      
+    };
+
+
   return (
     <div
       className="flex items-center justify-center h-screen bg-cover bg-opacity-0 bg-center p-10"
@@ -16,22 +63,23 @@ const Login = ({props}) => {
           <img src={iitglogo} />
         </div>
 
-        <div className="text-gray-950  text-2xl font-semibold">Log In</div>
+        <div className="capitalize text-gray-950  text-2xl font-semibold">{role} Log In</div>
 
         <div className="mt-4">
-          <p>Email ID</p>
+          <p className='select-none	'>Email ID</p>
           <input
-            className=" mt-2  border border-gray-600 p-2 rounded w-3/4"
+            className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
             type="email"
             placeholder=" Enter Email Id"
+            onChange={(e) =>{setEmail(e.target.value)}}
           ></input>
         </div>
 
         <div className="mt-4 relative ">
-          <p>Password</p>
+          <p className='select-none	'>Password</p>
           <div
             onClick={() => setshowPassword(!showPassword)}
-            className="absolute cursor-pointer top-10 right-28  text-2xl"
+            className="absolute cursor-pointer top-10 right-2  text-2xl"
           >
             {showPassword === false ? (
               <AiOutlineEye />
@@ -40,24 +88,26 @@ const Login = ({props}) => {
             )}
           </div>
           <input
-            className=" mt-2  border border-gray-600 p-2 rounded w-3/4"
+            className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
             type={showPassword === false ? "password" : "text"}
             placeholder=" Enter Password"
+            onChange={(e) =>{setPassword(e.target.value)}}
+
           ></input>
         </div>
 
         <div className="flex mt-8 justify-between items-center">
-          {/* role=="Patient"&& */}
+          {role=="patient"&&
           <div>
             Don't have an account?{" "}
             <Link className="text-blue-400" to="/Signup">
               Sign Up
             </Link>
-          </div>
+          </div>}
           <div>
             <Link
               type="button"
-              className="bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium"
+              className="bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium" onClick={submitHandler}
             >
               Login
             </Link>
