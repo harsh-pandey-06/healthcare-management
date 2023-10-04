@@ -11,13 +11,14 @@ import Settings from './pages/Settings';
 import Calendar from './pages/Calendar';
 import Invoices from './pages/Invoices';
 import AddAppointment from './pages/AddAppointment';
+import Login from './pages/Login';
 
 function App() {
   return (
     <div className="App">
       <Routes>
         <Route path="/dashboard" element={<Home />} />
-        <Route path="/" element={<MainHome />} />
+        <Route path="/" element={<Login />} />
 
         <Route path="/patient" element={<Patient />} />
         <Route path="/patient/new" element={<AddPatient />} />
