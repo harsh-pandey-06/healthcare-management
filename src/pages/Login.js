@@ -4,34 +4,50 @@ import iitglogo from "../assets/iitg_logo.jpg";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link } from 'react-router-dom';
 import axios from "axios"
-import toast, { Toaster } from 'react-hot-toast';
 
 const Login = (props) => {
+    // const role=props.role
   const { role,setRole}=props;
 console.log(role);
     const [showPassword,setshowPassword]=useState(false);
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    // const [loading, setLoading] = useState(false);
   
+    // const history = useHistory();
   
     const submitHandler = async () => {
+      // setLoading(true);
       if (!email || !password) {
         
-        toast.error("All fields required");
+        // setLoading(false);
         return;
       }
   
       // console.log(email, password);
-
       try {
+        // const config = {
+        //   headers: {
+        //     "Content-type": "application/json",
+        //   },
+        // };
+  
+        // const { data } = await axios.post(
+        //   "/api/v1/auth/patient/login",
+        //   { email, password },
+        //   // config
+        // );
         const data={email, password};
         const response=await axios.post(`http://localhost:4000/api/v1/auth/${role}/login`,data);
         console.log(response.data);
-        {response.data.success===true?toast.success("Logged in successfully"):toast.error("Error occured")}
+        // console.log(JSON.stringify(data));
+        // localStorage.setItem("userInfo", JSON.stringify(data));
+        // setLoading(false);
+        // history.push("/chats");
       } catch (error) {
         
-        toast.error("Server error")
+        // setLoading(false);
       }
       
     };
