@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const { login, signup } = require("../controllers/Admin");
-const { createDoctor } = require("../controllers/Doctor");
+const { login, signup,updateDoctor, deleteDoctorDetails} = require("../controllers/Doctor");
 
 router.post("/login", login);
 router.post("/signup", signup);
-// router.post("/updateAdmin", updateAdmin);
-router.post("/createDoctor",createDoctor);
+router.post("/updateDoctor", updateDoctor);
+router.delete("/deleteDoctor", deleteDoctorDetails);
+
 module.exports = router;

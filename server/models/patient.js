@@ -20,7 +20,7 @@ const patientSchema = new mongoose.Schema({
     type: String,
   },
   dateOfBirth: {
-    type: String,
+    type: Date,
   },
   mobile: {
     type: Number,

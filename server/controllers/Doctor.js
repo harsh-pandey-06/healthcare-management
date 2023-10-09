@@ -1,42 +1,167 @@
-// const bcrypt = require("bcrypt");
-const Admin = require("../models/Admin");
-// const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
 const Doctor=require("../models/doctor")
 require("dotenv").config();
 
 
+exports.signup = async (req, res) => {
+    try {
+      const {
+        firstname,
+        lastname,
+        mobile,
+        email,
+        password,
+        confirmPassword,
+        doctorId,
+        address,
+      } = req.body
+  
+      if (
+        !firstname ||
+        !lastname ||
+        !email ||
+        !password ||
+        !confirmPassword ||
+        !mobile ||
+        !doctorId ||
+        !address
+      ) {
+        return res.status(403).send({
+          success: false,
+          message: "All Fields are required",
+        })
+      }
+  
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message:
+            "Password and Confirm Password do not match. Please try again.",
+        })
+      }
+  
+      const existingUser = await Doctor.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Doctor account already exists with this email. Please sign in to continue.",
+        })
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      const user = await Doctor.create({
+        firstname,
+        lastname,
+        email,
+        mobile,
+        doctorId,
+        address,
+        password: hashedPassword,
+      })
+  
+      return res.status(200).json({
+        success: true,
+        user,
+        message: "Doctor created successfully",
+      })
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Doctor account cannot be created. Please try again.",
+      })
+    }
+  }
+  
+  exports.login = async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      if (!email || !password) {
+        return res.status(400).json({
+          success: false,
+          message: `Please Fill up All the Required Fields`,
+        })
+      }
+  
+      const user = await Doctor.findOne({ email });
+  
+      if (!user) {
+        return res.status(401).json({
+          success: false,
+          message: `Doctor is not registered.`,
+        })
+      }
+  
+      if (await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign(
+          { email: user.email, id: user._id, role: user.role },
+          process.env.JWT_SECRET,
+          {
+            expiresIn: "24h",
+          }
+        )
+  
+        const options = {
+          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+          httpOnly: true,
+        }
+        res.cookie("token", token, options).status(200).json({
+          success: true,
+          token,
+          message: `Doctor Login Success`,
+        })
+      } else {
+        return res.status(401).json({
+          success: false,
+          message: `Password is incorrect`,
+        })
+      }
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({
+        success: false,
+        message: `Login Failure. Please Try Again`,
+      })
+    }
+  }
 
-
-exports.updateAdmin = async (req, res) => {
+exports.updateDoctor = async (req, res) => {
   try {
     const {
-      firstName = "",
-      lastName = "",
+      firstname = "",
+      lastname = "",
       email = "",
       mobile = "",
+      doctorId="",
+      address="",
       id
     } = req.body
 
     // Find the profile by id
-    const AdminDetails = await Admin.findById(id)
+    // const DoctorDetails = await Doctor.findById(id)
 
-    const admin = await Admin.findByIdAndUpdate(id, {
-      firstName,
-      lastName,
+    const doctor = await Doctor.findByIdAndUpdate(id, {
+      firstname,
+      lastname,
       email,
-      mobile
+      mobile,
+      doctorId,
+      address
     })
-    await admin.save()
+    await doctor.save();
 
 
 
-
+    const DoctorDetails = await Doctor.findById(id)
 
     return res.json({
       success: true,
       message: "Profile updated successfully",
-      updatedAdminDetails,
+      DoctorDetails,
     })
   } catch (error) {
     console.log(error)
@@ -54,7 +179,7 @@ exports.getDoctorDetails = async (req, res) => {
     const doctorDetails = await User.findById(id);
     res.status(200).json({
       success: true,
-      message: "Admin data fetched successfully",
+      message: "Doctor data fetched successfully",
       data: doctorDetails,
     })
   } catch (error) {
@@ -63,18 +188,19 @@ exports.getDoctorDetails = async (req, res) => {
       message: error.message,
     })
   }
-}
+};
+
 exports.deleteDoctorDetails = async (req, res) => {
   try {
-    const id = req.user.id;
-    const Doctordetails = await Doctor.findById({ _id: id });
+    const id = req.body.id;
+    const Doctordetails = await Doctor.findById(id );
     if (!Doctordetails) {
       return res.status(404).json({
         success: false,
-        message: "Admin not found",
+        message: "Doctor not found",
       });
     }
-    await Doctor.findByIdAndDelete({ _id: id });
+    await Doctor.findByIdAndDelete(id );
     res.status(200).json({
       success: true,
       message: "Doctor data deleted successfully",

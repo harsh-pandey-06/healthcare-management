@@ -1,6 +1,6 @@
 import React from "react";
 
-const Appointment = () => {
+const AppointmentQueue = () => {
   return (
     <div className="flex gap-8 font-normal text-black justify-between p-3 mb-1 shadow transition-all ease-in-out cursor-pointer hover:shadow-xl">
       <div className="flex gap-2">
@@ -41,4 +41,4 @@ const Appointment = () => {
   );
 };
 
-export default Appointment;
+export default AppointmentQueue;
