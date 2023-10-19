@@ -17,20 +17,21 @@ import Signup from './pages/Signup';
 
 
 function App() {
-  const [role,setRole]=useState("patient");
+  const [user, setUser] = useState("");
+  const [role, setRole] = useState("patient");
 
   return (
     <div className="App">
       <Routes>
-        <Route path="/dashboard" element={<Home />} />
+        <Route path="/dashboard" element={<Home user={user} />} />
         <Route path="/" element={<MainHome role={role} setRole={setRole} />} />
-        <Route path="/login" element={<Login role={role} setRole={setRole} />} />
+        <Route path="/login" element={<Login role={role} setRole={setRole} setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
 
 
         <Route path="/patient" element={<Patient />} />
         <Route path="/patient/new" element={<AddPatient />} />
-        <Route path="/appointment/new" element={<AddAppointment />} />
+        <Route path="/appointment/new" element={<AddAppointment user={user} />} />
         <Route path="/doctor" element={<Doctor />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/help" element={<Help />} />

@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const { role, setRole } = props;
+  const { role, setRole, setUser } = props;
   console.log(role);
   const [showPassword, setshowPassword] = useState(false);
 
@@ -31,6 +31,7 @@ const Login = (props) => {
       );
       console.log(response.data);
       if (response.data.success === true) {
+        setUser(response.data.userId);
         console.log("naviagte");
         navigate("/dashboard");
       }

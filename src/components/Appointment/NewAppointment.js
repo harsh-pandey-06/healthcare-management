@@ -17,7 +17,8 @@ const style = {
     borderRadius: '16px',
 };
 
-const NewAppointment = () => {
+const NewAppointment = (props) => {
+    const { user } = props;
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",

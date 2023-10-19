@@ -127,6 +127,7 @@ exports.login = async (req, res) => {
       };
       res.cookie("token", token, options).status(200).json({
         success: true,
+        userId: user._id,
         token,
         message: `Patient Login Success`,
       });

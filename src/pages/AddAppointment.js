@@ -3,7 +3,8 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import NewAppointment from '../components/Appointment/NewAppointment';
 
-const AddAppointment = () => {
+const AddAppointment = (props) => {
+    const { user } = props;
     return (
         <div>
             <Navbar />
@@ -12,7 +13,7 @@ const AddAppointment = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <NewAppointment />
+                    <NewAppointment user={user} />
                 </div>
             </div>
         </div>
