@@ -7,8 +7,8 @@ import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
 
 const Login = (props) => {
-  const { role,setRole}=props;
-console.log(role);
+    const { role,setRole}=props;
+    console.log(role);
     const [showPassword,setshowPassword]=useState(false);
 
     const [email, setEmail] = useState();
@@ -39,7 +39,7 @@ console.log(role);
 
   return (
     <div
-      className="flex items-center justify-center h-screen bg-cover bg-opacity-0 bg-center p-10"
+      className="flex items-center justify-center h-screen bg-cover bg-opacity-0 bg-center p-10 "
       style={{ backgroundImage: `url(${bgimage})` }}
     >
       <div className="bg-white p-10 w-[30rem] shadow-xl">
@@ -47,7 +47,7 @@ console.log(role);
           <img src={iitglogo} />
         </div>
 
-        <div className="capitalize text-gray-950  text-2xl font-semibold">{role} Log In</div>
+        <div className="capitalize text-gray-950 text-2xl font-semibold">{role} Log In</div>
 
         <div className="mt-4">
           <p className='select-none	'>Email ID</p>
@@ -84,7 +84,7 @@ console.log(role);
           {role=="patient"&&
           <div>
             Don't have an account?{" "}
-            <Link className="text-blue-400" to="/Signup">
+            <Link className="text-blue-400" to="/signup">
               Sign Up
             </Link>
           </div>}

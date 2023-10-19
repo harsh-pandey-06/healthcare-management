@@ -30,7 +30,7 @@ const NewPatient = () => {
   }
 
   const handleOnSubmit = (e) => {
-
+    
   }
 
 

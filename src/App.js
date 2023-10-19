@@ -13,6 +13,7 @@ import Invoices from './pages/Invoices';
 import AddAppointment from './pages/AddAppointment';
 import Login from './pages/Login';
 import { useState } from 'react';
+import Signup from './pages/Signup';
 
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
         <Route path="/dashboard" element={<Home />} />
         <Route path="/" element={<MainHome role={role} setRole={setRole} />} />
         <Route path="/login" element={<Login role={role} setRole={setRole} />} />
+        <Route path="/signup" element={<Signup />} />
+
 
         <Route path="/patient" element={<Patient />} />
         <Route path="/patient/new" element={<AddPatient />} />

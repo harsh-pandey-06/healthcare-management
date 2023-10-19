@@ -9,7 +9,6 @@ const MainHome = (props) => {
 const { role,setRole}=props;
     const submitHandler=()=>{
     console.log(role);
-
     }
     // console.log(role);
   return (
