@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 
 
 const patientSchema = new mongoose.Schema({
-  patientId: {
-    type: string,
+  rollno: {
+    type: String,
     require: true,
   },
-  firstname: {
+  firstName: {
     type: String,
     trim: true,
     require: true,
   },
-  lastname: {
+  lastName: {
     type: String,
     trim: true,
     require: true,
@@ -19,8 +19,11 @@ const patientSchema = new mongoose.Schema({
   gender: {
     type: String,
   },
+  bloodGroup:{
+    type:String,
+  },
   dateOfBirth: {
-    type: String,
+    type: Date,
   },
   mobile: {
     type: Number,

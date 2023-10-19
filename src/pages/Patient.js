@@ -1,7 +1,6 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import NewPatient from '../components/NewPatient';
 
 const Patient = () => {
     return (
@@ -12,7 +11,7 @@ const Patient = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <NewPatient />
+                    Patient
                 </div>
             </div>
         </div>

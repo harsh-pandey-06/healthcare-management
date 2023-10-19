@@ -1,9 +1,9 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import AppointmentHandling from '../components/Appointment/AppointmentHandling';
+import NewPatient from '../components/Patient/NewPatient';
 
-const Calendar = () => {
+const AddPatient = () => {
     return (
         <div>
             <Navbar />
@@ -12,11 +12,11 @@ const Calendar = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <AppointmentHandling />
+                    <NewPatient />
                 </div>
             </div>
         </div>
     )
 }
 
-export default Calendar
+export default AddPatient
