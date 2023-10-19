@@ -8,36 +8,33 @@ const Patient=require("../models/patient")
 exports.signup = async (req, res) => {
     try {
       const {
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         mobile,
         email,
         password,
         confirmPassword,
-        patientId,
+        rollno,
         address,
         gender,
         dateOfBirth,
         state,
         city,
         pincode,
-
+        bloodGroup
       } = req.body
   
       if (
-        !firstname ||
-        !lastname ||
+        !firstName ||
+        !lastName ||
         !email ||
         !password ||
         !confirmPassword ||
         !mobile ||
-        !patientId ||
-        !address ||
+        !rollno ||
         !gender ||
         !dateOfBirth ||
-        !state ||
-        !city ||
-        !pincode
+        !bloodGroup
       ) {
         return res.status(403).send({
           success: false,
@@ -64,17 +61,18 @@ exports.signup = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, 10);
   
       const user = await Patient.create({
-        firstname,
-        lastname,
+        firstName,
+        lastName,
         email,
         mobile,
-        patientId,
+        rollno,
         address,
         gender,
         dateOfBirth,
         state,
         city,
         pincode,
+        bloodGroup,
         password: hashedPassword,
       })
   
@@ -150,11 +148,11 @@ exports.signup = async (req, res) => {
 exports.updatePatient = async (req, res) => {
   try {
     const {
-      firstname = "",
-      lastname = "",
+      firstName = "",
+      lastName = "",
       email = "",
       mobile = "",
-      patientId="",
+      rollno="",
       gender ="",
       dateOfBirth="",
       state="",
@@ -166,11 +164,11 @@ exports.updatePatient = async (req, res) => {
     // Find the profile by id
 
     const patient = await Patient.findByIdAndUpdate(id, {
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       email,
       mobile,
-      patientId,
+      rollno,
       gender ,
       dateOfBirth,
       state,
@@ -245,9 +243,9 @@ exports.createPatient = async (req, res) => {
 
     // Get all required fields from request body
     let {
-      patientId,
-      firstname,
-      lastname,
+      rollno,
+      firstName,
+      lastName,
       gender,
       dateOfBirth,
       mobile,
@@ -261,9 +259,9 @@ exports.createPatient = async (req, res) => {
 
     // Check if any of the required fields are missing
     if (
-      !patientId ||
-      !firstname ||
-      !lastname ||
+      !rollno ||
+      !firstName ||
+      !lastName ||
       !gender ||
       !dateOfBirth ||
       !mobile ||
@@ -282,9 +280,9 @@ exports.createPatient = async (req, res) => {
 
     // Create a new patient with the given details
     const newPatient = await Patient.create({
-      patientId,
-      firstname,
-      lastname,
+      rollno,
+      firstName,
+      lastName,
       gender,
       dateOfBirth,
       mobile,
