@@ -11,6 +11,7 @@ const Signup = () => {
     const [showPassword,setshowPassword]=useState(false);
     const [showConfirmPassword,setshowConfirmPassword]=useState(false);
     const navigate=useNavigate();
+    const [realOtp,setRealOtp] = useState();
     const [formData, setFormData] = useState({
       firstName: "",
       lastName: "",
@@ -23,9 +24,57 @@ const Signup = () => {
       password: "",
       confirmPassword:""
     })
+
+    const handleOnChange = (e) => {
+      setFormData((prevData) => ({
+        ...prevData,
+        [e.target.name]: e.target.value,
+      }))
+      // console.log(formData)
+    }
+      const [otp,setOtp] = useState();
+    const handleOnChangeOTP = (e) => {
+        setOtp(e.target.value);
+      }
+
     const { firstName, lastName, email, rollno, gender, bloodGroup,
       mobile, dateOfBirth,password,confirmPassword} = formData;
-  
+      const OTPHandler=async()=>{
+        if (
+          !firstName ||
+          !lastName ||
+          !email ||
+          !password ||
+          !confirmPassword ||
+          !mobile ||
+          !rollno ||
+          !gender ||
+          !dateOfBirth ||
+          !bloodGroup
+        ) {
+          toast.error("All fields required");
+          return;
+        }
+    
+        if (password !== confirmPassword) {
+              toast.error("Password and Confirm Password do not match. Please try again");
+              return;
+          }
+      
+        const response = await axios.post(
+          `http://localhost:4000/api/v1/auth/patient/sendOtp`,
+          {email}
+        );
+        
+        if(response.data.success==true)
+        {
+          toast.success("OTP sent Successfully")
+        }
+        // const myOtp=response.data.otp;
+        setRealOtp(response.data.otp);
+        //to do : disable input fiels after otp generation
+      }
+
       const submitHandler = async () => {
         if (
           !email ||
@@ -40,6 +89,12 @@ const Signup = () => {
           !rollno
         ) {
           toast.error("All fields required");
+          return;
+        }
+
+        if(confirmPassword!=password)
+        {
+          toast.error("Passwords don't match");
           return;
         }
 
@@ -58,16 +113,25 @@ const Signup = () => {
             gender,
             rollno,
           };
+          
+          if(!otp)
+          {
+            toast.error("OTP is required");
+            return;
+          }
+          if(realOtp!=otp)
+          {
+            toast.error("OTP does not Match");
+            return;
+          }
+
+          console.log("hello");
+
           const response = await axios.post(
             `http://localhost:4000/api/v1/auth/patient/signup`,
             data
           );
-          console.log(response.data);
-          console.log("hello");
-          if (response.data.success === true) {
-            console.log("naviagte");
-            navigate("/login");
-          }
+
           {
             response.data.success === true
               ? toast.success("Account Created Successfully")
@@ -76,14 +140,10 @@ const Signup = () => {
         } catch (error) {
           toast.error("Server error");
         }
+
+        navigate("/login");
       };
-      const handleOnChange = (e) => {
-        setFormData((prevData) => ({
-          ...prevData,
-          [e.target.name]: e.target.value,
-        }))
-        // console.log(formData)
-      }
+
 
 
   return (
@@ -266,16 +326,36 @@ const Signup = () => {
         </div>
 
         </div>
-      
+
+        <p className='select-none mt-4'>Enter OTP<span className='text-red-600'>*</span></p>
+        <input
+            className=" mt-2 select-none border border-gray-600 rounded p-2 w-full"
+            required
+              type="text"
+              name="otp"
+              value={otp}
+              placeholder='Enter OTP'
+              onChange={handleOnChangeOTP}
+          ></input>
+        <div className='flex justify-end'>
+            <button
+              type="button"
+              className=" mt-2 mr-1 cursor-pointer text-grayblack-600 p-1 rounded-lg text font-medium "
+              onClick={OTPHandler}
+            >
+              Send OTP
+            </button>
+        </div>
+        
         <div className='flex justify-center'>
-            <Link
+            <button
               type="button"
               className="bg-blue-500 mt-5 cursor-pointer text-white px-10 py-3 rounded-lg text-sm font-medium" onClick={submitHandler}
             >
               Sign Up
-            </Link>
-          </div>
-
+            </button>
+        </div>
+        
       </div>
       
     </div>

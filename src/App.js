@@ -14,6 +14,7 @@ import AddAppointment from './pages/AddAppointment';
 import Login from './pages/Login';
 import { useState } from 'react';
 import Signup from './pages/Signup';
+import Otp from './pages/Otp';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/" element={<MainHome role={role} setRole={setRole} />} />
         <Route path="/login" element={<Login role={role} setRole={setRole} setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path='/otp' element={<Otp/>}/>
 
 
         <Route path="/patient" element={<Patient />} />
