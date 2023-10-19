@@ -2,41 +2,88 @@ import React, { useState } from 'react'
 import bgimage from "../assets/iitgbg.jpeg";
 import iitglogo from "../assets/iitg_logo.jpg";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from "axios"
 import toast, { Toaster } from 'react-hot-toast';
+
 
 const Signup = () => {
     const [showPassword,setshowPassword]=useState(false);
     const [showConfirmPassword,setshowConfirmPassword]=useState(false);
-
+    const navigate=useNavigate();
     const [formData, setFormData] = useState({
       firstName: "",
       lastName: "",
       email: "",
-      patientId: "",
+      rollno: "",
       gender: "",
       bloodGroup: "",
       mobile: "",
-      age: "",
+      dateOfBirth: "",
       password: "",
       confirmPassword:""
     })
-    const { firstName, lastName, email, patientId, gender, bloodGroup,
-      mobile, age,password,confirmPassword} = formData;
+    const { firstName, lastName, email, rollno, gender, bloodGroup,
+      mobile, dateOfBirth,password,confirmPassword} = formData;
   
-  
+      const submitHandler = async () => {
+        if (
+          !email ||
+          !password ||
+          !confirmPassword ||
+          !mobile ||
+          !bloodGroup ||
+          !firstName ||
+          !lastName ||
+          !dateOfBirth ||
+          !gender ||
+          !rollno
+        ) {
+          toast.error("All fields required");
+          return;
+        }
+
+        // // console.log(email, password);
+
+        try {
+          const data = {
+            email,
+            password,
+            confirmPassword,
+            mobile,
+            bloodGroup,
+            firstName,
+            lastName,
+            dateOfBirth,
+            gender,
+            rollno,
+          };
+          const response = await axios.post(
+            `http://localhost:4000/api/v1/auth/patient/signup`,
+            data
+          );
+          console.log(response.data);
+          console.log("hello");
+          if (response.data.success === true) {
+            console.log("naviagte");
+            navigate("/login");
+          }
+          {
+            response.data.success === true
+              ? toast.success("Account Created Successfully")
+              : toast.error("Error occured");
+          }
+        } catch (error) {
+          toast.error("Server error");
+        }
+      };
       const handleOnChange = (e) => {
         setFormData((prevData) => ({
           ...prevData,
           [e.target.name]: e.target.value,
         }))
+        // console.log(formData)
       }
-
-    const submitHandler = async () => {
-      console.log(formData);
-      
-    };
 
 
   return (
@@ -98,9 +145,9 @@ const Signup = () => {
             className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
             required
               type="text"
-              name="patientId"
+              name="rollno"
               placeholder='Enter Roll No'
-              value={patientId}
+              value={rollno}
               onChange={handleOnChange}
           ></input>
           </div>
@@ -143,8 +190,8 @@ const Signup = () => {
             className=" mt-2 select-none border border-gray-600 p-2 px-7 rounded w-full"
             required
               type="date"
-              name="age"
-              value={age}
+              name="dateOfBirth"
+              value={dateOfBirth}
               placeholder='Enter Blood Group'
               onChange={handleOnChange}
           ></input>
