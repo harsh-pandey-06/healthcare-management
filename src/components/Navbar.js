@@ -10,12 +10,12 @@ const Navbar = () => {
         <div className='shadow sticky top-0 z-[100] bg-white'>
             <div className='w-5/6 mx-auto py-5 items-center flex justify-between'>
                 <div className='flex gap-10 items-center'>
-                    <div className='text-blue-500 font-bold text-2xl flex gap-2 items-center'>
+                    <Link to="/" className='text-blue-500 font-bold text-2xl flex gap-2 items-center'>
                         <div className='p-3 rounded-full bg-sky-50 border border-sky-100'>
                             <FaHeartPulse />
                         </div>
                         <h1>MediTrack</h1>
-                    </div>
+                    </Link>
                     <div className='search relative'>
                         <input type="text" className='bg-gray-200 rounded px-4 pl-10 py-2 focus:outline-none border-none text-slate-600' placeholder='Search' />
                         <HiOutlineSearch className='absolute top-3 left-3 text-slate-500' />
