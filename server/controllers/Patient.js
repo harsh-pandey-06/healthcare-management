@@ -1,149 +1,149 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 require("dotenv").config();
-const Patient=require("../models/patient")
-
+const Patient = require("../models/patient");
 
 exports.signup = async (req, res) => {
-    try {
-      const {
-        firstName,
-        lastName,
-        mobile,
-        email,
-        password,
-        confirmPassword,
-        rollno,
-        address,
-        gender,
-        dateOfBirth,
-        state,
-        city,
-        pincode,
-        bloodGroup
-      } = req.body
-  
-      if (
-        !firstName ||
-        !lastName ||
-        !email ||
-        !password ||
-        !confirmPassword ||
-        !mobile ||
-        !rollno ||
-        !gender ||
-        !dateOfBirth ||
-        !bloodGroup
-      ) {
-        return res.status(403).send({
-          success: false,
-          message: "All Fields are required",
-        })
-      }
-  
-      if (password !== confirmPassword) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Password and Confirm Password do not match. Please try again.",
-        })
-      }
-  
-      const existingUser = await Patient.findOne({ email });
-      if (existingUser) {
-        return res.status(400).json({
-          success: false,
-          message: "Patient account already exists with this email. Please sign in to continue.",
-        })
-      }
-  
-      const hashedPassword = await bcrypt.hash(password, 10);
-  
-      const user = await Patient.create({
-        firstName,
-        lastName,
-        email,
-        mobile,
-        rollno,
-        address,
-        gender,
-        dateOfBirth,
-        state,
-        city,
-        pincode,
-        bloodGroup,
-        password: hashedPassword,
-      })
-  
+  try {
+    const {
+      firstName,
+      lastName,
+      mobile,
+      email,
+      password,
+      confirmPassword,
+      rollno,
+      address,
+      gender,
+      dateOfBirth,
+      state,
+      city,
+      pincode,
+      bloodGroup,
+    } = req.body;
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !mobile ||
+      !rollno ||
+      !gender ||
+      !dateOfBirth ||
+      !bloodGroup
+    ) {
+      return res.status(403).send({
+        success: false,
+        message: "All Fields are required",
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password and Confirm Password do not match. Please try again.",
+      });
+    }
+
+    const existingUser = await Patient.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Patient account already exists with this email. Please sign in to continue.",
+      });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await Patient.create({
+      firstName,
+      lastName,
+      email,
+      mobile,
+      rollno,
+      address,
+      gender,
+      dateOfBirth,
+      state,
+      city,
+      pincode,
+      bloodGroup,
+      password: hashedPassword,
+    });
+
+    return res.status(200).json({
+      success: true,
+      user,
+      message: "Patient created successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Patient account cannot be created. Please try again.",
+    });
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    console.log("Email: ", email);
+    console.log("password: ", password);
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: `Please Fill up All the Required Fields`,
+      });
+    }
+    // console.log("checking user exists");
+    const user = await Patient.findOne({ email });
+
+    if (!user) {
       return res.status(200).json({
-        success: true,
-        user,
-        message: "Patient created successfully",
-      })
-    } catch (error) {
-      console.error(error);
-      return res.status(500).json({
         success: false,
-        message: "Patient account cannot be created. Please try again.",
-      })
+        message: `Patient is not registered.`,
+      });
     }
-  }
-  
-  exports.login = async (req, res) => {
-    try {
-      const { email, password } = req.body;
-      console.log("Email: ",email);
-      console.log("password: ",password);
-  
-      if (!email || !password) {
-        return res.status(400).json({
-          success: false,
-          message: `Please Fill up All the Required Fields`,
-        })
-      }
-      // console.log("checking user exists");
-      const user = await Patient.findOne({ email });
-  
-      if (!user) {
-        return res.status(200).json({
-          success: false,
-          message: `Patient is not registered.`,
-        })
-      }
-      // console.log("password match");
-      if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign(
-          { email: user.email, id: user._id, role: user.role },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "24h",
-          }
-        )
-        // console.log("check 3");
-        const options = {
-          expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-          httpOnly: true,
+    // console.log("password match");
+    if (await bcrypt.compare(password, user.password)) {
+      const token = jwt.sign(
+        { email: user.email, id: user._id, role: user.role },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "24h",
         }
-        res.cookie("token", token, options).status(200).json({
-          success: true,
-          token,
-          message: `Patient Login Success`,
-        })
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: `Password is incorrect`,
-        })
-      }
-    } catch (error) {
-      console.error(error)
-      return res.status(500).json({
+      );
+      // console.log("check 3");
+      const options = {
+        expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+      };
+      res.cookie("token", token, options).status(200).json({
+        success: true,
+        token,
+        message: `Patient Login Success`,
+      });
+    } else {
+      return res.status(401).json({
         success: false,
-        message: `Login Failure. Please Try Again`,
-      })
+        message: `Password is incorrect`,
+      });
     }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: `Login Failure. Please Try Again`,
+    });
   }
+};
 
 exports.updatePatient = async (req, res) => {
   try {
@@ -152,14 +152,14 @@ exports.updatePatient = async (req, res) => {
       lastName = "",
       email = "",
       mobile = "",
-      rollno="",
-      gender ="",
-      dateOfBirth="",
-      state="",
-      city="",
-      pincode="",
-      id
-    } = req.body
+      rollno = "",
+      gender = "",
+      dateOfBirth = "",
+      state = "",
+      city = "",
+      pincode = "",
+      id,
+    } = req.body;
 
     // Find the profile by id
 
@@ -169,49 +169,62 @@ exports.updatePatient = async (req, res) => {
       email,
       mobile,
       rollno,
-      gender ,
+      gender,
       dateOfBirth,
       state,
       city,
       pincode,
-    })
-    await patient.save()
+    });
+    await patient.save();
 
-    const PatientDetails = await Patient.findById(id)
-
-
-
+    const PatientDetails = await Patient.findById(id);
 
     return res.json({
       success: true,
       message: "Profile updated successfully",
       PatientDetails,
-    })
+    });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       success: false,
       error: error.message,
-    })
+    });
   }
-}
+};
 
 exports.getPatientDetails = async (req, res) => {
   try {
     const id = req.user.id;
-    const patientDetails = await User.findById(id);
+    const patientDetails = await Patient.findById(id);
     res.status(200).json({
       success: true,
       message: "Patient data fetched successfully",
       data: patientDetails,
-    })
+    });
   } catch (error) {
     return res.status(500).json({
       success: false,
       message: error.message,
-    })
+    });
   }
-}
+};
+
+exports.getAllPatients = async (req, res) => {
+  try {
+    const patientDetails = await Patient.find();
+    res.status(200).json({
+      success: true,
+      message: "Patient data fetched successfully",
+      data: patientDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
 
 exports.deletePatientDetails = async (req, res) => {
   try {
@@ -254,7 +267,7 @@ exports.createPatient = async (req, res) => {
       city,
       pincode,
       email,
-      password
+      password,
     } = req.body;
 
     // Check if any of the required fields are missing
@@ -291,7 +304,7 @@ exports.createPatient = async (req, res) => {
       city,
       pincode,
       email,
-      password
+      password,
     });
 
     // Return the new patient and a success message

@@ -3,14 +3,15 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const corsOptions = {
-	origin: '*',
-	credentials: true,            //access-control-allow-credentials:true
-	optionSuccessStatus: 200,
-}
+  origin: "*",
+  credentials: true, //access-control-allow-credentials:true
+  optionSuccessStatus: 200,
+};
 app.use(cors(corsOptions));
 const adminRoutes = require("./routes/admin");
 const patientRoutes = require("./routes/patient");
 const doctorRoutes = require("./routes/doctor");
+const appointmentRoutes = require("./routes/appointment");
 const database = require("./config/db");
 const dotenv = require("dotenv");
 
@@ -28,16 +29,17 @@ app.use(express.json());
 app.use("/api/v1/auth/admin", adminRoutes);
 app.use("/api/v1/auth/patient", patientRoutes);
 app.use("/api/v1/auth/doctor", doctorRoutes);
+app.use("/api/v1/appointment", appointmentRoutes);
 
 // Testing the server
 app.get("/", (req, res) => {
-	return res.json({
-		success: true,
-		message: "Your server is up and running ...",
-	});
+  return res.json({
+    success: true,
+    message: "Your server is up and running ...",
+  });
 });
 
 // Listening to the server
 app.listen(PORT, () => {
-	console.log(`App is listening at ${PORT}`);
+  console.log(`App is listening at ${PORT}`);
 });

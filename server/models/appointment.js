@@ -2,27 +2,27 @@ const mongoose = require("mongoose");
 
 // Define the Profile schema
 const appointmentSchema = new mongoose.Schema({
-  patientId: {
-    type: String,
-    required: true,
-  },
-  firstname: {
-    type: String,
-    trim: true,
-    required: true,
-  },
-  lastname: {
-    type: String,
-    trim: true,
-    required: true,
-  },
+  // rollno: {
+  //   type: String,
+  //   required: true,
+  // },
+  // firstName: {
+  //   type: String,
+  //   trim: true,
+  //   required: true,
+  // },
+  // lastName: {
+  //   type: String,
+  //   trim: true,
+  //   required: true,
+  // },
   time: {
     type: Date,
     required: true,
   },
   doctor: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: "Doctor",
   },
   patient: {
@@ -30,7 +30,7 @@ const appointmentSchema = new mongoose.Schema({
     required: true,
     ref: "Patient",
   },
-  Reason: {
+  symptopms: {
     type: String,
     required: true,
   },
@@ -43,10 +43,10 @@ const appointmentSchema = new mongoose.Schema({
     enum: ["Pending", "Approved", "Cancelled", "Closed"],
     default: "Pending",
   },
-  password: {
-    type: String,
+  department:{
+    type:String,
     required: true,
-  },
+  }
 },
   { timestamps: true }
 );
