@@ -244,7 +244,7 @@ exports.updatePatient = async (req, res) => {
 
 exports.getPatientDetails = async (req, res) => {
   try {
-    const id = req.user.id;
+    const id = req.query.id;
     const patientDetails = await Patient.findById(id);
     res.status(200).json({
       success: true,

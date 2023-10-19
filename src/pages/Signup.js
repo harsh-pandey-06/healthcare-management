@@ -69,6 +69,7 @@ const Signup = () => {
         if(response.data.success==true)
         {
           toast.success("OTP sent Successfully")
+          console.log(response.data.otp);
         }
         // const myOtp=response.data.otp;
         setRealOtp(response.data.otp);
@@ -262,7 +263,7 @@ const Signup = () => {
               <select
             className=" mt-2 select-none border border-gray-600 p-2 px-14  rounded w-full"
             required
-              type="email"
+              type="text"
               name="gender"
               value={gender}
               placeholder='Male/Female/Others'

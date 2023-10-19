@@ -29,11 +29,9 @@ function App() {
         <Route path="/login" element={<Login role={role} setRole={setRole} setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
         <Route path='/otp' element={<Otp/>}/>
-
-
         <Route path="/patient" element={<Patient />} />
         <Route path="/patient/new" element={<AddPatient />} />
-        <Route path="/appointment/new" element={<AddAppointment user={user} />} />
+        <Route path="/appointment/new" element={<AddAppointment user={user} role={role} />} />
         <Route path="/doctor" element={<Doctor />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/help" element={<Help />} />
