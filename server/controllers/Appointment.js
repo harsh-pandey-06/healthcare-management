@@ -33,3 +33,53 @@ exports.createAppointment = async (req, res) => {
     });
   }
 };
+
+exports.getAppointmentDetails = async (req, res) => {
+  try {
+    const id = req.body.id;
+    const appointmentDetails = await Appointment.findById(id).populate("patient").exec();
+    res.status(200).json({
+      success: true,
+      message: "Appointment data fetched successfully",
+      data: appointmentDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAppointmentsByPatientId = async (req, res) => {
+  try {
+    const patient = req.body.patientId;
+    const appointmentDetails = await Appointment.find({ patient });
+    res.status(200).json({
+      success: true,
+      message: "Appointment data fetched successfully",
+      data: appointmentDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAllAppointments = async (req, res) => {
+  try {
+    const appointmentDetails = await Appointment.find().populate("patient").exec();
+    res.status(200).json({
+      success: true,
+      message: "Appointment data fetched successfully",
+      data: appointmentDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
