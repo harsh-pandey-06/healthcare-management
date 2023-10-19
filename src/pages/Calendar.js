@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import AppointmentHandling from '../components/Appointment/AppointmentHandling';
 
 const Calendar = () => {
     return (
@@ -11,7 +12,7 @@ const Calendar = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <div>Calendar</div>
+                    <AppointmentHandling />
                 </div>
             </div>
         </div>
