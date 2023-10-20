@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 const Sidebar = () => {
     return (
         <div className='flex flex-col gap-1 px-1 py-5 border-r fixed h-full w-1/5'>
-            <NavLink to="/" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
+            <NavLink to="/dashboard" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
                 <AiOutlinePieChart />
                 <span className='text-base'>Dashboard</span>
             </NavLink>
