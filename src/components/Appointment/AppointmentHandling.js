@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { AiOutlineClose } from 'react-icons/ai';
+import axios from "axios";
 
 const style = {
     position: 'absolute',
@@ -18,6 +19,15 @@ const AppointmentHandling = () => {
     const [reason, setReason] = useState("");
     const [openAcceptModal, setOpenAcceptModal] = useState(false);
     const [openRejectModal, setOpenRejectModal] = useState(false);
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        const response = await axios.get(`http://localhost:4000/api/v1/appointment/getAllAppointments`);
+        console.log(response.data.data);
+    };
 
     const handleOpenAcceptModal = () => setOpenAcceptModal(true);
     const handleCloseAcceptModal = () => setOpenAcceptModal(false);
