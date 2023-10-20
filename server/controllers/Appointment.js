@@ -16,7 +16,7 @@ exports.createAppointment = async (req, res) => {
       patient: patientId,
       symptopms,
       department,
-      token_no: Math.random() * 100 + 100, // TODO: create an algo for token no
+      token_no: Math.round(Math.random() * 100 + 100), // TODO: create an algo for token no
       status: "Pending",
     });
 

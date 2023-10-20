@@ -4,7 +4,7 @@ import Navbar from '../components/Navbar';
 import NewAppointment from '../components/Appointment/NewAppointment';
 
 const AddAppointment = (props) => {
-    const { user } = props;
+    const { user,role } = props;
     return (
         <div>
             <Navbar />
