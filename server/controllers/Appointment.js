@@ -19,7 +19,7 @@ exports.createAppointment = async (req, res) => {
       const ids = doctorDetails.map(doc => doc._id);
 
       await Promise.all(ids.map(async (doctorId) => {
-        const appointments = await Appointment.find({ doctor: doctorId });
+        const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment });
         let count = 0;
         appointments.forEach(data => {
           if (data.slot === slot)

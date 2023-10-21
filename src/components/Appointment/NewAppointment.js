@@ -96,10 +96,12 @@ const NewAppointment = (props) => {
             await Promise.all(ids.map(async (doctorId) => {
                 const appointments = await axios.get(`http://localhost:4000/api/v1/appointment/getAppointmentsByDoctorId`, { params: { doctorId } });
                 appointments.data.data.forEach(data => {
-                    if (countMap[data.slot] === undefined) {
-                        countMap[data.slot] = 1;
-                    } else {
-                        countMap[data.slot]++;
+                    if (data?.dateOfAppointment?.substring(0, 10) === dateOfAppointment) {
+                        if (countMap[data.slot] === undefined) {
+                            countMap[data.slot] = 1;
+                        } else {
+                            countMap[data.slot]++;
+                        }
                     }
                 })
             }));
