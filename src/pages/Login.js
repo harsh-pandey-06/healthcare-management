@@ -4,7 +4,7 @@ import iitglogo from "../assets/iitg_logo.jpg";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const Login = (props) => {
       {
         response.data.success === true
           ? toast.success("Logged in successfully")
-          : toast.error("Error occured");
+          : toast.error(response.data.message);
       }
     } catch (error) {
       toast.error("Server error");

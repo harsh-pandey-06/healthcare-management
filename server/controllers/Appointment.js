@@ -3,26 +3,30 @@ require("dotenv").config();
 
 exports.createAppointment = async (req, res) => {
   try {
-    const { patientId, symptopms, department } = req.body;
+    const { patient, doctor, slot, symptoms, dateOfAppointment } = req.body;
 
-    if (!patientId || !symptopms || !department) {
-      return res.status(403).send({
+    if (!patient || !doctor || !slot || !symptoms || !dateOfAppointment) {
+      return res.status(200).send({
         success: false,
         message: "All Fields are required",
       });
     }
+
+    const token_no = await Appointment.find({}).count();
+
     const appointment = await Appointment.create({
-      time: Date.now(),
-      patient: patientId,
-      symptopms,
-      department,
-      token_no: Math.round(Math.random() * 100 + 100), // TODO: create an algo for token no
+      patient,
+      doctor,
+      symptoms,
+      slot,
+      token_no,
+      dateOfAppointment,
       status: "Pending",
     });
 
     return res.status(200).json({
       success: true,
-      appointment,
+      data: appointment,
       message: "Appointment created successfully",
     });
   } catch (error) {
@@ -53,8 +57,25 @@ exports.getAppointmentDetails = async (req, res) => {
 
 exports.getAppointmentsByPatientId = async (req, res) => {
   try {
-    const patient = req.body.patientId;
+    const patient = req.query.patientId;
     const appointmentDetails = await Appointment.find({ patient });
+    res.status(200).json({
+      success: true,
+      message: "Appointment data fetched successfully",
+      data: appointmentDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getAppointmentsByDoctorId = async (req, res) => {
+  try {
+    const doctor = req.query.doctorId;
+    const appointmentDetails = await Appointment.find({ doctor });
     res.status(200).json({
       success: true,
       message: "Appointment data fetched successfully",
@@ -71,6 +92,22 @@ exports.getAppointmentsByPatientId = async (req, res) => {
 exports.getAllAppointments = async (req, res) => {
   try {
     const appointmentDetails = await Appointment.find().populate("patient").exec();
+    res.status(200).json({
+      success: true,
+      message: "Appointment data fetched successfully",
+      data: appointmentDetails,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+exports.getTokenNo = async (req, res) => {
+  try {
+    const appointmentDetails = await Appointment.find();
     res.status(200).json({
       success: true,
       message: "Appointment data fetched successfully",

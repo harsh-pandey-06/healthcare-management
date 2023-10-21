@@ -223,7 +223,7 @@ const NewAppointment = (props) => {
                         </div>
                         <div className='bg-gray-300 my-6 h-[1px] w-full'></div>
                         <div>
-                            <select id="department" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5">
+                            <select id="department" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg w-full p-2.5">
                                 <option selected>Choose a department</option>
                                 <option value="Cardiology">Cardiology</option>
                                 <option value="ENT">ENT</option>
@@ -240,42 +240,42 @@ const NewAppointment = (props) => {
                             </select>
                         </div>
                         <div>
-                            <h3 class="my-5 text-lg font-medium text-gray-900">Book a slot</h3>
-                            <ul class="grid w-full gap-6 grid-cols-3">
+                            <h3 className="my-5 text-lg font-medium text-gray-900">Book a slot</h3>
+                            <ul className="grid w-full gap-6 grid-cols-3">
                                 <li>
-                                    <input type="radio" id="slot8to10" name="slot" value="slot8to10" class="hidden peer" required />
-                                    <label for="slot8to10" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">8:00 AM - 10:00 AM</div>
+                                    <input type="radio" id="slot8to10" name="slot" value="slot8to10" className="hidden peer" required />
+                                    <label htmlFor="slot8to10" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">8:00 AM - 10:00 AM</div>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="slot10to12" name="slot" value="slot10to12" class="hidden peer" />
-                                    <label for="slot10to12" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">10:00 AM - 12:00 PM</div>
+                                    <input type="radio" id="slot10to12" name="slot" value="slot10to12" className="hidden peer" />
+                                    <label htmlFor="slot10to12" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">10:00 AM - 12:00 PM</div>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="slot12to2" name="slot" value="slot12to2" class="hidden peer" required />
-                                    <label for="slot12to2" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">12:00 PM - 2:00 PM</div>
+                                    <input type="radio" id="slot12to2" name="slot" value="slot12to2" className="hidden peer" required />
+                                    <label htmlFor="slot12to2" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">12:00 PM - 2:00 PM</div>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="slot2to4" name="slot" value="slot2to4" class="hidden peer" />
-                                    <label for="slot2to4" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">2:00 PM - 4:00 PM</div>
+                                    <input type="radio" id="slot2to4" name="slot" value="slot2to4" className="hidden peer" />
+                                    <label htmlFor="slot2to4" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">2:00 PM - 4:00 PM</div>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="slot4to6" name="slot" value="slot4to6" class="hidden peer" required />
-                                    <label for="slot4to6" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">4:00 PM - 6:00 PM</div>
+                                    <input type="radio" id="slot4to6" name="slot" value="slot4to6" className="hidden peer" required />
+                                    <label htmlFor="slot4to6" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">4:00 PM - 6:00 PM</div>
                                     </label>
                                 </li>
                                 <li>
-                                    <input type="radio" id="slot6to8" name="slot" value="slot6to8" class="hidden peer" />
-                                    <label for="slot6to8" class="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
-                                        <div class="w-full">6:00 PM - 8:00 PM</div>
+                                    <input type="radio" id="slot6to8" name="slot" value="slot6to8" className="hidden peer" />
+                                    <label htmlFor="slot6to8" className="inline-flex items-center justify-between w-full p-5 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100">
+                                        <div className="w-full">6:00 PM - 8:00 PM</div>
                                     </label>
                                 </li>
                             </ul>

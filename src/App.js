@@ -18,7 +18,7 @@ import Otp from './pages/Otp';
 
 
 function App() {
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState("6531aa197962f177a282c9e1"); //temp
   const [role, setRole] = useState("patient");
 
   return (
@@ -28,7 +28,7 @@ function App() {
         <Route path="/" element={<MainHome role={role} setRole={setRole} />} />
         <Route path="/login" element={<Login role={role} setRole={setRole} setUser={setUser} />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path='/otp' element={<Otp/>}/>
+        <Route path='/otp' element={<Otp />} />
         <Route path="/patient" element={<Patient />} />
         <Route path="/patient/new" element={<AddPatient />} />
         <Route path="/appointment/new" element={<AddAppointment user={user} role={role} />} />
