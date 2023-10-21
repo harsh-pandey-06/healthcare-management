@@ -130,34 +130,6 @@ const NewAppointment = (props) => {
         }
     }
 
-    const assignDoctor = async () => {
-        try {
-            const response = await axios.get(`http://localhost:4000/api/v1/auth/doctor/fetchByDept`, { params: { department } });
-
-            // get doctor ids of particular dept
-            const ids = response.data.data.map(doc => doc._id);
-            let assignedDoctor = [];
-
-            await Promise.all(ids.map(async (doctorId) => {
-                const appointments = await axios.get(`http://localhost:4000/api/v1/appointment/getAppointmentsByDoctorId`, { params: { doctorId } });
-                let count = 0;
-                appointments.data.data.forEach(data => {
-                    if (data.slot === slot)
-                        count++;
-                })
-                if (count < 4) {
-                    assignedDoctor.push(doctorId);
-                }
-            }));
-            console.log(assignedDoctor[0]);
-            return assignedDoctor[0];
-        }
-        catch (error) {
-            toast.error("Server error. Please try again later");
-            console.log("Error while checking availibility", error.message);
-        }
-    }
-
     const handleOnChange = (e) => {
         if (e.target.name === "department" || e.target.name === "dateOfAppointment")
             setSlotOpen(false);
@@ -183,10 +155,9 @@ const NewAppointment = (props) => {
         //TODO: integrate create Appointment
         const toastId = toast.loading('Loading...');
         try {
-            const doctor = await assignDoctor();
             const data = {
                 patient: user,
-                doctor,
+                department,
                 slot,
                 symptoms,
                 dateOfAppointment

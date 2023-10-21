@@ -14,6 +14,7 @@ const doctorRoutes = require("./routes/doctor");
 const appointmentRoutes = require("./routes/appointment");
 const database = require("./config/db");
 const dotenv = require("dotenv");
+const itemsCronJob = require('./controllers/cronJob');
 
 const PORT = process.env.PORT || 4000;
 
@@ -43,3 +44,5 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`App is listening at ${PORT}`);
 });
+
+// itemsCronJob();

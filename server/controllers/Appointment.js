@@ -1,18 +1,54 @@
 const Appointment = require("../models/appointment");
+const Doctor = require("../models/doctor");
 require("dotenv").config();
 
 exports.createAppointment = async (req, res) => {
   try {
-    const { patient, doctor, slot, symptoms, dateOfAppointment } = req.body;
+    const { patient, department, slot, symptoms, dateOfAppointment } = req.body;
 
-    if (!patient || !doctor || !slot || !symptoms || !dateOfAppointment) {
+    if (!patient || !department || !slot || !symptoms || !dateOfAppointment) {
       return res.status(200).send({
         success: false,
         message: "All Fields are required",
       });
     }
 
+    let assignedDoctor = [];
+    try {
+      const doctorDetails = await Doctor.find({ department });
+      const ids = doctorDetails.map(doc => doc._id);
+
+      await Promise.all(ids.map(async (doctorId) => {
+        const appointments = await Appointment.find({ doctor: doctorId });
+        let count = 0;
+        appointments.forEach(data => {
+          if (data.slot === slot)
+            count++;
+        })
+        if (count < 4) {
+          assignedDoctor.push({ count, doctorId });
+        }
+      }));
+    }
+    catch (error) {
+      console.error(error.message);
+      return res.status(500).json({
+        success: false,
+        message: "Appointment cannot be created. Please try again.",
+      });
+    }
+
+    if (assignedDoctor.length === 0) {
+      return res.status(200).json({
+        success: false,
+        message: "No slots left. Please book a different slot",
+      });
+    }
+
+
     const token_no = await Appointment.find({}).count();
+
+    const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
 
     const appointment = await Appointment.create({
       patient,
