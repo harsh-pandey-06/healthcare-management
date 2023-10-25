@@ -1,10 +1,12 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import Setting from '../components/Setting';
+import Profile from '../components/profile'
+import { useState } from "react";
+import axios from "axios";
 
-const Settings = (props) => {
-    const {user,role} = props;
+const UserProfile = (props) => {
+   const {user,role} = props;
     return (
         <div>
             <Navbar />
@@ -13,11 +15,11 @@ const Settings = (props) => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <Setting user = {user}/>
+                    <Profile user={user}/>
                 </div>
             </div>
         </div>
     )
 }
 
-export default Settings
+export default UserProfile

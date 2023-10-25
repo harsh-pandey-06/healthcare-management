@@ -237,7 +237,7 @@ const NewAppointment = () => {
         }
     };
 
-    const handleOnSubmit = (e) => { };
+    const handleOnSubmit = (e) => {};
 
     return (
         <>
