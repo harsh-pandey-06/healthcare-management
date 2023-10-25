@@ -41,7 +41,7 @@ function App() {
         <Route path="/doctor" element={<Doctor />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/help" element={<Help />} />
-        <Route path="/settings" element={<Settings />} />
+        <Route path="/settings" element={<Settings user={user} />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/invoices" element={<Invoices />} />
         <Route path="/profile" element={<UserProfile role={role} />} />
