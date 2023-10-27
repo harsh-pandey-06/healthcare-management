@@ -300,3 +300,48 @@ exports.createDoctor = async (req, res) => {
     });
   }
 };
+
+exports.scheduleLeave = async (req, res) => {
+  try {
+    // Get all required fields from request body
+    const { doctorId, startTime, endTime } = req.body;
+    if (
+      !doctorId ||
+      !startTime ||
+      !endTime
+    ) {
+      return res.status(200).json({
+        success: false,
+        message: 'All Fields are required',
+      });
+    }
+
+    // add leave to doctor schedule
+    const updatedDoctor = await Doctor.findOneAndUpdate(
+      { _id: doctorId },
+      {
+        $push: {
+          "leaveSchedule": {
+            startTime, endTime
+          }
+        }
+      },
+      { new: true }
+    );
+
+    // Return the new doctor and a success message
+    res.status(200).json({
+      success: true,
+      data: updatedDoctor,
+      message: 'Leave scheduled successfully',
+    });
+  } catch (error) {
+    // Handle any errors that occur during the creation of the doctor
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to schedule leave',
+      error: error.message,
+    });
+  }
+};
