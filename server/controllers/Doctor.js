@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Doctor = require("../models/doctor")
+const Appointment = require("../models/appointment")
 require("dotenv").config();
 
 
@@ -328,6 +329,49 @@ exports.scheduleLeave = async (req, res) => {
       },
       { new: true }
     );
+
+    // cancel all appointments in this time period
+    const allAppointments = await Appointment.find({ doctor: doctorId });
+
+    await Promise.all(allAppointments.map(async (data) => {
+
+      let startHour = 0, endHour = 0;
+      if (data.slot === "slot8to10") {
+        startHour = 8;
+        endHour = 10;
+      }
+      else if (data.slot === "slot10to12") {
+        startHour = 10;
+        endHour = 12;
+      }
+      else if (data.slot === "slot12to2") {
+        startHour = 12;
+        endHour = 14;
+      }
+      else if (data.slot === "slot2to4") {
+        startHour = 14;
+        endHour = 16;
+      }
+      else if (data.slot === "slot4to6") {
+        startHour = 16;
+        endHour = 18;
+      }
+      else if (data.slot === "slot6to8") {
+        startHour = 18;
+        endHour = 20;
+      }
+      const appointmentTime = data.dateOfAppointment?.setHours(startHour, 0);
+      if (startTime <= appointmentTime && appointmentTime < endTime) {
+        const updatedAppointment = await Appointment.findOneAndUpdate(
+          { _id: data._id },
+          {
+            status: "Pending",
+          },
+          { new: true }
+        );
+        // console.log("Rescheduled: ", updatedAppointment);
+      }
+    }));
 
     // Return the new doctor and a success message
     res.status(200).json({

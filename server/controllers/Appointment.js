@@ -140,19 +140,3 @@ exports.getAllAppointments = async (req, res) => {
     });
   }
 };
-
-exports.getTokenNo = async (req, res) => {
-  try {
-    const appointmentDetails = await Appointment.find();
-    res.status(200).json({
-      success: true,
-      message: "Appointment data fetched successfully",
-      data: appointmentDetails,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
