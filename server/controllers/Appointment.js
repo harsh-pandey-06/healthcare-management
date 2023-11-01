@@ -1,5 +1,6 @@
 const Appointment = require("../models/appointment");
 const Doctor = require("../models/doctor");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
 exports.createAppointment = async (req, res) => {
@@ -13,58 +14,78 @@ exports.createAppointment = async (req, res) => {
       });
     }
 
-    let assignedDoctor = [];
-    try {
-      const doctorDetails = await Doctor.find({ department });
-      const ids = doctorDetails.map(doc => doc._id);
+    const session = await mongoose.startSession();
+    const transactionOptions = {
+      readPreference: 'primary',
+      readConcern: { level: 'local' },
+      writeConcern: { w: 'majority' }
+    };
+    let appointment;
 
-      await Promise.all(ids.map(async (doctorId) => {
-        const appointments = await Appointment.find({ doctor: doctorId });
-        let count = 0;
-        appointments.forEach(data => {
-          if (data.slot === slot)
-            count++;
-        })
-        if (count < 4) {
-          assignedDoctor.push({ count, doctorId });
+    try {
+      await session.withTransaction(async () => {
+
+        let assignedDoctor = [];
+        try {
+          const doctorDetails = await Doctor.find({ department });
+          const ids = doctorDetails.map(doc => doc._id);
+
+          await Promise.all(ids.map(async (doctorId) => {
+            const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment });
+            let count = 0;
+            appointments.forEach(data => {
+              if (data.slot === slot)
+                count++;
+            })
+            if (count < 4) {
+              assignedDoctor.push({ count, doctorId });
+            }
+          }));
         }
-      }));
-    }
-    catch (error) {
-      console.error(error.message);
+        catch (error) {
+          console.error(error.message);
+          return res.status(500).json({
+            success: false,
+            message: "Appointment cannot be created. Please try again.",
+          });
+        }
+
+        if (assignedDoctor.length === 0) {
+          return res.status(200).json({
+            success: false,
+            message: "No slots left. Please book a different slot",
+          });
+        }
+
+        const token_no = await Appointment.find({}).count();
+        const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
+
+        appointment = await Appointment.create({
+          patient,
+          doctor,
+          symptoms,
+          slot,
+          token_no,
+          dateOfAppointment,
+          status: "Approved",
+        });
+      }, transactionOptions);
+
+      return res.status(200).json({
+        success: true,
+        data: appointment,
+        message: "Appointment created successfully",
+      });
+
+    } catch (error) {
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: "Appointment cannot be created. Please try again.",
       });
+    } finally {
+      await session.endSession();
     }
-
-    if (assignedDoctor.length === 0) {
-      return res.status(200).json({
-        success: false,
-        message: "No slots left. Please book a different slot",
-      });
-    }
-
-
-    const token_no = await Appointment.find({}).count();
-
-    const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
-
-    const appointment = await Appointment.create({
-      patient,
-      doctor,
-      symptoms,
-      slot,
-      token_no,
-      dateOfAppointment,
-      status: "Pending",
-    });
-
-    return res.status(200).json({
-      success: true,
-      data: appointment,
-      message: "Appointment created successfully",
-    });
   } catch (error) {
     console.error(error);
     return res.status(500).json({
@@ -130,22 +151,6 @@ exports.getAppointmentsByDoctorId = async (req, res) => {
 exports.getAllAppointments = async (req, res) => {
   try {
     const appointmentDetails = await Appointment.find().populate("patient").exec();
-    res.status(200).json({
-      success: true,
-      message: "Appointment data fetched successfully",
-      data: appointmentDetails,
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message,
-    });
-  }
-};
-
-exports.getTokenNo = async (req, res) => {
-  try {
-    const appointmentDetails = await Appointment.find();
     res.status(200).json({
       success: true,
       message: "Appointment data fetched successfully",

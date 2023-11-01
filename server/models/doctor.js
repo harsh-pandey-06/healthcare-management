@@ -32,10 +32,12 @@ const doctorSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  isAvailable: {
-    type: Boolean,
-    default: true,
-  }
+  leaveSchedule: [
+    {
+      startTime: { type: Number },
+      endTime: { type: Number }
+    }
+  ]
 },
   { timestamps: true }
 );

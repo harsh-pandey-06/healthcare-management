@@ -16,7 +16,6 @@ const Chat = () => {
                         <li>Doctor taking leave - Reschedule or notify patient</li>
                         <li>May need use of cron jobs to make doctor available after leave period ends</li>
                         <li>Manage state using react redux</li>
-                        <li>Avoid concurrent bookings in appointment such as when there is only one slot left</li>
                         <li>In doctor, show list of all doctors</li>
                         <li>In calendar, show appointments by date</li>
                         <li>In profile, show user details</li>
