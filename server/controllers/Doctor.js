@@ -2,8 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Doctor = require("../models/doctor")
 const Appointment = require("../models/appointment")
+const mongoose = require("mongoose");
 require("dotenv").config();
-
 
 exports.signup = async (req, res) => {
   try {
@@ -317,68 +317,127 @@ exports.scheduleLeave = async (req, res) => {
       });
     }
 
-    // add leave to doctor schedule
-    const updatedDoctor = await Doctor.findOneAndUpdate(
-      { _id: doctorId },
-      {
-        $push: {
-          "leaveSchedule": {
-            startTime, endTime
-          }
-        }
-      },
-      { new: true }
-    );
+    const session = await mongoose.startSession();
+    const transactionOptions = {
+      readPreference: 'primary',
+      readConcern: { level: 'local' },
+      writeConcern: { w: 'majority' }
+    };
 
-    // cancel all appointments in this time period
-    const allAppointments = await Appointment.find({ doctor: doctorId });
+    let updatedDoctor;
 
-    await Promise.all(allAppointments.map(async (data) => {
+    try {
+      await session.withTransaction(async () => {
 
-      let startHour = 0, endHour = 0;
-      if (data.slot === "slot8to10") {
-        startHour = 8;
-        endHour = 10;
-      }
-      else if (data.slot === "slot10to12") {
-        startHour = 10;
-        endHour = 12;
-      }
-      else if (data.slot === "slot12to2") {
-        startHour = 12;
-        endHour = 14;
-      }
-      else if (data.slot === "slot2to4") {
-        startHour = 14;
-        endHour = 16;
-      }
-      else if (data.slot === "slot4to6") {
-        startHour = 16;
-        endHour = 18;
-      }
-      else if (data.slot === "slot6to8") {
-        startHour = 18;
-        endHour = 20;
-      }
-      const appointmentTime = data.dateOfAppointment?.setHours(startHour, 0);
-      if (startTime <= appointmentTime && appointmentTime < endTime) {
-        const updatedAppointment = await Appointment.findOneAndUpdate(
-          { _id: data._id },
+        // add leave to doctor schedule
+        updatedDoctor = await Doctor.findOneAndUpdate(
+          { _id: doctorId },
           {
-            status: "Pending",
+            $push: {
+              "leaveSchedule": {
+                startTime, endTime
+              }
+            }
           },
           { new: true }
         );
-        // console.log("Rescheduled: ", updatedAppointment);
-      }
-    }));
 
-    // Return the new doctor and a success message
-    res.status(200).json({
-      success: true,
-      data: updatedDoctor,
-      message: 'Leave scheduled successfully',
-    });
+        // cancel all appointments in this time period
+        const allAppointments = await Appointment.find({ doctor: doctorId });
+
+        await Promise.all(allAppointments.map(async (data) => {
+
+          let startHour = 0, endHour = 0;
+          if (data.slot === "slot8to10") {
+            startHour = 8;
+            endHour = 10;
+          }
+          else if (data.slot === "slot10to12") {
+            startHour = 10;
+            endHour = 12;
+          }
+          else if (data.slot === "slot12to2") {
+            startHour = 12;
+            endHour = 14;
+          }
+          else if (data.slot === "slot2to4") {
+            startHour = 14;
+            endHour = 16;
+          }
+          else if (data.slot === "slot4to6") {
+            startHour = 16;
+            endHour = 18;
+          }
+          else if (data.slot === "slot6to8") {
+            startHour = 18;
+            endHour = 20;
+          }
+          const appointmentTime = data.dateOfAppointment?.setHours(startHour, 0);
+          if (startTime <= appointmentTime && appointmentTime < endTime) {
+            await Appointment.findOneAndUpdate(
+              { _id: data._id },
+              {
+                status: "Pending",
+              },
+              { new: true }
+            );
+
+            // assign new doctor
+            let assignedDoctor = [];
+            const doctorDetails = await Doctor.find({ department: updatedDoctor.department });
+            const ids = doctorDetails.map(doc => doc._id);
+
+            await Promise.all(ids.map(async (doctorId) => {
+              const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment: data.dateOfAppointment });
+              let count = 0;
+              appointments.forEach(el => {
+                if (el.slot === data.slot)
+                  count++;
+              })
+              if (count < 4) {
+                assignedDoctor.push({ count, doctorId });
+              }
+            }));
+
+
+            if (assignedDoctor.length === 0) {
+              // send email to patient
+              return;
+            }
+
+            const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
+
+            const updatedAppointment = await Appointment.findOneAndUpdate(
+              { _id: data._id },
+              {
+                doctor,
+                status: "Approved",
+              },
+              { new: true }
+            );
+          }
+        }));
+
+      }, transactionOptions);
+
+      res.status(200).json({
+        success: true,
+        data: updatedDoctor,
+        message: 'Leave scheduled successfully',
+      });
+
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to schedule leave',
+        error: error.message,
+      });
+    } finally {
+      await session.endSession();
+    }
+
+
   } catch (error) {
     // Handle any errors that occur during the creation of the doctor
     console.error(error);
