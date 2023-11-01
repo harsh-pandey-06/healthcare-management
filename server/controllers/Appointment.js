@@ -106,6 +106,7 @@ exports.createAppointment = async (req, res) => {
             slot,
             token_no,
             dateOfAppointment,
+            department,
             status: "Approved",
           });
           return res.status(200).json({

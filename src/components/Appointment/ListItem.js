@@ -15,7 +15,7 @@ const ListItem = (props) => {
         <span className="text-lg font-medium">Preferred slot: </span>{value.slot}
       </div>
       <div>
-        <span className="text-lg font-medium">Department: </span>ENT
+        <span className="text-lg font-medium">Department: </span>{value.department ?? "Not specified"}
       </div>
       <div>
         <span className="text-lg font-medium">Reason: </span>

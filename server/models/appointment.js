@@ -33,6 +33,11 @@ const appointmentSchema = new mongoose.Schema({
   dateOfAppointment: {
     type: Date,
     required: true,
+  },
+  department: {
+    type: String,
+    enum: ["Cardiology", "ENT", "General", "Gynaecology", "Haematology", "Neurology", "Oncology", "Opthalmology", "Orthopaedic", "Pediatrics", "Psychiatry", "Urology"],
+    require: true,
   }
 },
   { timestamps: true }
