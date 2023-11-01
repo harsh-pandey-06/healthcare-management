@@ -88,14 +88,14 @@ const NewAppointment = () => {
         // console.log(response.data.data);
         setFormData((prevData) => ({
             ...prevData,
-            firstName: response.data.data.firstName,
-            lastName: response.data.data.lastName,
-            patientId: response.data.data.rollno,
-            dateOfBirth: response.data.data.dateOfBirth.substr(0, 10),
-            gender: response.data.data.gender,
-            bloodGroup: response.data.data.bloodGroup,
-            mobile: response.data.data.mobile,
-            email: response.data.data.email,
+            firstName: response.data.data?.firstName,
+            lastName: response.data.data?.lastName,
+            patientId: response.data.data?.rollno,
+            dateOfBirth: response.data.data?.dateOfBirth.substr(0, 10),
+            gender: response.data.data?.gender,
+            bloodGroup: response.data.data?.bloodGroup,
+            mobile: response.data.data?.mobile,
+            email: response.data.data?.email,
         }));
     };
     // fetchData();

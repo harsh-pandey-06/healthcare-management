@@ -4,6 +4,8 @@ const Doctor = require("../models/doctor")
 const Appointment = require("../models/appointment")
 const mongoose = require("mongoose");
 const patient = require("../models/patient");
+const sendMail = require("../utils/sendMail");
+const rescheduleTemplate = require("../mail/rescheduleEmail");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -405,6 +407,17 @@ exports.scheduleLeave = async (req, res) => {
               try {
                 const patient = await patient.findById(data.patient);
                 const emailID = patient.email;
+                try {
+                  const mailResponse = await sendMail(
+                    emailID,
+                    "Verification Email",
+                    rescheduleTemplate()
+                  );
+                  console.log("Email sent successfully: ", mailResponse.response);
+                } catch (error) {
+                  console.log("Error occurred while sending email: ", error);
+                  throw error;
+                }
                 // send email to patient
               } catch (error) {
                 console.log("Cannot send email to patient: ", patient);
