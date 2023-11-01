@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
-const Patient=require("../models/patient");
+const Patient = require("../models/patient");
 const OTP = require("../models/OTP");
 
 exports.sendOtp = async (req, res) => {
@@ -145,7 +145,7 @@ exports.login = async (req, res) => {
     console.log("password: ", password);
 
     if (!email || !password) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: `Please Fill up All the Required Fields`,
       });
@@ -180,7 +180,7 @@ exports.login = async (req, res) => {
         message: `Patient Login Success`,
       });
     } else {
-      return res.status(401).json({
+      return res.status(200).json({
         success: false,
         message: `Password is incorrect`,
       });
