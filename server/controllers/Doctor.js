@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Doctor = require("../models/doctor")
 const Appointment = require("../models/appointment")
 const mongoose = require("mongoose");
+const patient = require("../models/patient");
 require("dotenv").config();
 
 exports.signup = async (req, res) => {
@@ -401,7 +402,14 @@ exports.scheduleLeave = async (req, res) => {
 
 
             if (assignedDoctor.length === 0) {
-              // send email to patient
+              try {
+                const patient = await patient.findById(data.patient);
+                const emailID = patient.email;
+                // send email to patient
+              } catch (error) {
+                console.log("Cannot send email to patient: ", patient);
+                console.log("Error: ", error.message);
+              }
               return;
             }
 
