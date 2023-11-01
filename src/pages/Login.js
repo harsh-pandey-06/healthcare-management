@@ -8,8 +8,7 @@ import toast from "react-hot-toast";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const { role, setRole, setUser } = props;
-  console.log(role);
+  const { role, setRole} = props;
   const [showPassword, setshowPassword] = useState(false);
 
   const [email, setEmail] = useState();
@@ -31,15 +30,16 @@ const Login = (props) => {
       );
       console.log(response.data);
       if (response.data.success === true) {
-        setUser(response.data.userId);
-        console.log("naviagte");
+        // setUser(response.data.userId);
         navigate("/dashboard");
       }
       {
         response.data.success === true
-          ? toast.success("Logged in successfully")
+          ? toast.success("Logged in successfully") && localStorage.setItem("userInfo", JSON.stringify(response.data.userId))
           : toast.error(response.data.message);
       }
+      
+
     } catch (error) {
       toast.error("Server error");
     }
@@ -94,7 +94,7 @@ const Login = (props) => {
         </div>
 
         <div className="flex mt-8 justify-between items-center">
-          {role == "patient" && (
+          {role === "patient" && (
             <div>
               Don't have an account?{" "}
               <Link className="text-blue-400" to="/signup">

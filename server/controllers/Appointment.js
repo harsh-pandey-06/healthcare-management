@@ -111,7 +111,9 @@ exports.getAppointmentsByPatientId = async (req, res) => {
 exports.getAppointmentsByDoctorId = async (req, res) => {
   try {
     const doctor = req.query.doctorId;
-    const appointmentDetails = await Appointment.find({ doctor });
+    const appointmentDetails = await Appointment.find({ doctor })
+      .populate("patient")
+      .exec();
     res.status(200).json({
       success: true,
       message: "Appointment data fetched successfully",

@@ -3,7 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
-
+import ListofAppointments from './ListofAppointments'
 
 const UpcomingAppointments = () => {
     return (
@@ -40,8 +40,9 @@ const UpcomingAppointments = () => {
                     Upcoming Appointments
                     <div className="bg-gray-400 h-[1px] w-9/12"></div>
                 </div>
-                <div>
-
+                
+                <div>  
+                        <ListofAppointments/>
                 </div>
             </div>
         </LocalizationProvider>

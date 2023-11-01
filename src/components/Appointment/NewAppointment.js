@@ -8,6 +8,8 @@ import { FiCheckCircle } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { UserState } from "../../Context/UserProvider";
+import { useLocation } from "react-router-dom";
 
 const style = {
     position: "absolute",
@@ -19,8 +21,15 @@ const style = {
     borderRadius: "16px",
 };
 
-const NewAppointment = (props) => {
-    const { user, role } = props;
+const NewAppointment = () => {
+    const role  = "Patient";
+    const [loggedUser,setLoggedUser]=useState();
+    const { user } = UserState();
+
+    useEffect(() => {
+        fetchData();
+     }, []);
+
     const [slots, setSlots] = useState({
         slot8to10: "",
         slot10to12: "",
@@ -67,9 +76,16 @@ const NewAppointment = (props) => {
     const handleOpenSuccessModal = () => setOpenSuccessModal(true);
     const handleCloseSuccessModal = () => setOpenSuccessModal(false);
 
+    
+    
     const fetchData = async () => {
-        const response = await axios.get(`http://localhost:4000/api/v1/auth/patient/getById`, { params: { id: user } });
-        console.log(response.data.data);
+        // setLoggedUser(user);
+        let profile = JSON.parse(localStorage.getItem("userInfo"));
+        const response = await axios.get(
+          `http://localhost:4000/api/v1/auth/patient/getById`,
+          { params: { id: profile } }
+        );
+        // console.log(response.data.data);
         setFormData((prevData) => ({
             ...prevData,
             firstName: response.data.data.firstName,
@@ -82,7 +98,7 @@ const NewAppointment = (props) => {
             email: response.data.data.email,
         }));
     };
-
+    // fetchData();
     const getAvailaibility = async () => {
         const toastId = toast.loading('Loading...');
         try {
@@ -138,9 +154,9 @@ const NewAppointment = (props) => {
             [e.target.name]: e.target.value,
         }));
     };
-    useEffect(() => {
-        fetchData();
-    }, []);
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
 
     const handleClickCheckAvailibility = () => {
         if (!department) {
@@ -154,13 +170,14 @@ const NewAppointment = (props) => {
     const handleClickBookAppointment = async () => {
         //TODO: integrate create Appointment
         const toastId = toast.loading('Loading...');
+
         try {
             const data = {
-                patient: user,
-                department,
-                slot,
-                symptoms,
-                dateOfAppointment
+              patient: loggedUser,
+              department,
+              slot,
+              symptoms,
+              dateOfAppointment,
             };
             const response = await axios.post("http://localhost:4000/api/v1/appointment/create", data);
             console.log(response.data);
