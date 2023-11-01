@@ -1,23 +1,29 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [token, setToken] = useState("");
 
-  const navigate = useNavigate();
+  // const getUserFromToken=()=>{
+
+  // };
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    setUser(userInfo);
-  }, [navigate]);
+    const localToken = JSON.parse(localStorage.getItem("userInfo"));
+    if (localToken) {
+      setUser(localToken);
+    }
+  }, []);
 
   return (
     <UserContext.Provider
       value={{
         user,
         setUser,
+        token,
+        setToken
       }}
     >
       {children}

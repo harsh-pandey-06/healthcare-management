@@ -15,10 +15,13 @@ import Login from "./pages/Login";
 import { useState } from "react";
 import Signup from "./pages/Signup";
 import Otp from "./pages/Otp";
+import { UserState } from "./Context/UserProvider";
 
 function App() {
   const [user, setUser] = useState("6531feb915f067919565d14a"); //temp
   const [role, setRole] = useState("patient");
+  const { token, setToken } = UserState();
+  console.log(token);
 
   return (
     <div className="App">

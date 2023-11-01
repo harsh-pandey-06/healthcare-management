@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const { role, setRole} = props;
+  const { role, setRole } = props;
   const [showPassword, setshowPassword] = useState(false);
 
   const [email, setEmail] = useState();
@@ -35,10 +35,10 @@ const Login = (props) => {
       }
       {
         response.data.success === true
-          ? toast.success("Logged in successfully") && localStorage.setItem("userInfo", JSON.stringify(response.data.userId))
+          ? toast.success("Logged in successfully") && localStorage.setItem("userInfo", JSON.stringify(response.data.token))
           : toast.error(response.data.message);
       }
-      
+
 
     } catch (error) {
       toast.error("Server error");

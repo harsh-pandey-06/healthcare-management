@@ -32,6 +32,23 @@ app.use("/api/v1/auth/patient", patientRoutes);
 app.use("/api/v1/auth/doctor", doctorRoutes);
 app.use("/api/v1/appointment", appointmentRoutes);
 
+app.post('/api/v1//checkToken', (req, res) => {
+  try {
+    const token = req.body.jwt;
+    if (token == null) return res.status(401).json({ result: "User not found" });
+    else {
+      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) return res.status(401).send(err);
+        req.user = user;
+        return res.status(200).send({ user: user });
+      });
+    }
+  }
+  catch (err) {
+    return res.status(500).send(err);
+  }
+});
+
 // Testing the server
 app.get("/", (req, res) => {
   return res.json({
