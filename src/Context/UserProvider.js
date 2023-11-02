@@ -23,7 +23,7 @@ const UserProvider = ({ children }) => {
     const data = {
       jwt: localToken
     };
-    const response = await axios.post("http://localhost:4000/api/v1/checkToken", data);
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/checkToken`, data);
     setUser(response.data.user);
   };
 

@@ -25,7 +25,7 @@ const AppointmentHandling = () => {
     }, []);
 
     const fetchData = async () => {
-        const response = await axios.get(`http://localhost:4000/api/v1/appointment/getAllAppointments`);
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/appointment/getAllAppointments`);
         console.log(response.data.data);
     };
 

@@ -79,7 +79,7 @@ const ListAppointments = () => {
         slot,
         dateOfAppointment,
       };
-      const response = await axios.post("http://localhost:4000/api/v1/appointment/reschedule", data);
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/appointment/reschedule`, data);
       console.log(response.data);
       toast.dismiss(toastId);
       if (response.data.success === true) {
@@ -103,7 +103,7 @@ const ListAppointments = () => {
     console.log("Fetch data called");
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/appointment/${user.role === "doctor" ? "getAppointmentsByDoctorId" : "getAppointmentsByPatientId"}`,
+        `${process.env.REACT_APP_BASE_URL}/api/v1/appointment/${user.role === "doctor" ? "getAppointmentsByDoctorId" : "getAppointmentsByPatientId"}`,
         { params: { id: user.id } }
       );
 
@@ -180,7 +180,7 @@ const ListAppointments = () => {
   const getAvailaibility = async (department) => {
     const toastId = toast.loading('Loading...');
     try {
-      const response = await axios.get(`http://localhost:4000/api/v1/auth/doctor/fetchByDept`, { params: { department } });
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/auth/doctor/fetchByDept`, { params: { department } });
 
       const doctorDetails = response.data.data;
 
@@ -227,7 +227,7 @@ const ListAppointments = () => {
       let countMap = {};
 
       await Promise.all(ids.map(async (doctorId) => {
-        const appointments = await axios.get(`http://localhost:4000/api/v1/appointment/getAppointmentsByDoctorId`, { params: { doctorId } });
+        const appointments = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/appointment/getAppointmentsByDoctorId`, { params: { doctorId } });
         appointments.data.data.forEach(data => {
           if (data?.dateOfAppointment?.substring(0, 10) === dateOfAppointment && data?.status === "Approved") {
             if (countMap[data.slot] === undefined) {

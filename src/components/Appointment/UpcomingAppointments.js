@@ -40,7 +40,7 @@ const UpcomingAppointments = () => {
                 ...leaveRange
             };
 
-            const response = await axios.post("http://localhost:4000/api/v1/auth/doctor/scheduleLeave", data);
+            const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/api/v1/auth/doctor/scheduleLeave`, data);
             console.log(response.data);
             toast.dismiss(toastId);
 

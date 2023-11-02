@@ -35,7 +35,7 @@ export default function AllDoctors() {
   const submitHandler = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:4000/api/v1/auth/doctor/fetchAll`
+        `${process.env.REACT_APP_BASE_URL}/api/v1/auth/doctor/fetchAll`
       );
       //  console.log(response.data.data)
       const doctorData = response.data.data;

@@ -25,7 +25,7 @@ const PreviousAppointments = () => {
   //  console.log(user);
   const allAppointments = async () => {
     const response = await axios.get(
-      `http://localhost:4000/api/v1/appointment/getAppointmentsByPatientId`,
+      `${process.env.REACT_APP_BASE_URL}/api/v1/appointment/${user.role === "doctor" ? "getAppointmentsByDoctorId" : "getAppointmentsByPatientId"}`,
       { params: { id: user.id } }
     );
     // console.log(response);

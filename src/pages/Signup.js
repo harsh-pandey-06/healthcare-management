@@ -64,7 +64,7 @@ const Signup = () => {
     const toastId = toast.loading('Loading...');
 
     const response = await axios.post(
-      `http://localhost:4000/api/v1/auth/patient/sendOtp`,
+      `${process.env.REACT_APP_BASE_URL}/api/v1 / auth / patient / sendOtp`,
       { email }
     );
 
@@ -128,7 +128,7 @@ const Signup = () => {
       console.log(response.data);
 
       const response = await axios.post(
-        `http://localhost:4000/api/v1/auth/patient/signup`,
+        `${process.env.REACT_APP_BASE_URL} /api/v1 / auth / patient / signup`,
         data
       );
 

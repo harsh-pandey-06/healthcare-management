@@ -23,7 +23,7 @@ const Login = (props) => {
     try {
       const data = { email, password };
       const response = await axios.post(
-        `http://localhost:4000/api/v1/auth/${role}/login`,
+        `${process.env.REACT_APP_BASE_URL}/api/v1/auth/${role}/login`,
         data
       );
       console.log(response.data);

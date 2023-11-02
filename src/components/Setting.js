@@ -40,7 +40,7 @@ const Setting = () => {
     mobile, dateOfBirth, address, state, city, pincode } = formData;
 
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:4000/api/v1/auth/${user.role}/getById`, { params: { id: user.id } });
+    const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/api/v1/auth/${user.role}/getById`, { params: { id: user.id } });
     console.log(response.data.data);
     setFormData((prevData) => ({
       ...prevData,
@@ -71,7 +71,7 @@ const Setting = () => {
     e.preventDefault();
     try {
       const response = await axios.put(
-        `http://localhost:4000/api/v1/auth/patient/updatePatient`,
+        `${process.env.REACT_APP_BASE_URL}/api/v1/auth/patient/updatePatient`,
         { id: user.id, formData },
         { headers: { 'Content-Type': 'application/json' } }
       );
