@@ -28,7 +28,46 @@ exports.createAppointment = async (req, res) => {
         let assignedDoctor = [];
         try {
           const doctorDetails = await Doctor.find({ department });
-          const ids = doctorDetails.map(doc => doc._id);
+
+          let startHour = 0, endHour = 0;
+          if (slot === "slot8to10") {
+            startHour = 8;
+            endHour = 10;
+          }
+          else if (slot === "slot10to12") {
+            startHour = 10;
+            endHour = 12;
+          }
+          else if (slot === "slot12to2") {
+            startHour = 12;
+            endHour = 14;
+          }
+          else if (slot === "slot2to4") {
+            startHour = 14;
+            endHour = 16;
+          }
+          else if (slot === "slot4to6") {
+            startHour = 16;
+            endHour = 18;
+          }
+          else if (slot === "slot6to8") {
+            startHour = 18;
+            endHour = 20;
+          }
+          const appointmentTime = dateOfAppointment?.setHours(startHour, 0);
+
+          const ids = doctorDetails.map(doc => {
+            const leaveArr = doc.leaveSchedule;
+            let isAvailable = true;
+            leaveArr.forEach(leave => {
+              if (leave.startTime <= appointmentTime && appointmentTime < leave.endTime) {
+                isAvailable = false;
+              }
+            })
+            if (isAvailable) {
+              return doc._id
+            }
+          });
 
           await Promise.all(ids.map(async (doctorId) => {
             const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment });
@@ -56,26 +95,28 @@ exports.createAppointment = async (req, res) => {
             message: "No slots left. Please book a different slot",
           });
         }
+        else {
+          const token_no = await Appointment.find({}).count();
+          const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
 
-        const token_no = await Appointment.find({}).count();
-        const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0].doctorId;
-
-        appointment = await Appointment.create({
-          patient,
-          doctor,
-          symptoms,
-          slot,
-          token_no,
-          dateOfAppointment,
-          status: "Approved",
-        });
+          appointment = await Appointment.create({
+            patient,
+            doctor,
+            symptoms,
+            slot,
+            token_no,
+            dateOfAppointment,
+            status: "Approved",
+          });
+          return res.status(200).json({
+            success: true,
+            data: appointment,
+            message: "Appointment created successfully",
+          });
+        }
       }, transactionOptions);
 
-      return res.status(200).json({
-        success: true,
-        data: appointment,
-        message: "Appointment created successfully",
-      });
+
 
     } catch (error) {
       console.error(error);

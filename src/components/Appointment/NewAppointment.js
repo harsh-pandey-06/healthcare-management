@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import Box from "@mui/material/Box";
@@ -174,7 +173,7 @@ const NewAppointment = () => {
 
         try {
             const data = {
-                patient: user,
+                patient: user.id,
                 department,
                 slot,
                 symptoms,

@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const Doctor = require("../models/doctor")
 const Appointment = require("../models/appointment")
 const mongoose = require("mongoose");
-const patient = require("../models/patient");
+const Patient = require("../models/patient");
 const sendMail = require("../utils/sendMail");
 const rescheduleTemplate = require("../mail/rescheduleEmail");
 require("dotenv").config();
@@ -381,6 +381,7 @@ exports.scheduleLeave = async (req, res) => {
               { _id: data._id },
               {
                 status: "Pending",
+                doctor: null,
               },
               { new: true }
             );
@@ -388,10 +389,21 @@ exports.scheduleLeave = async (req, res) => {
             // assign new doctor
             let assignedDoctor = [];
             const doctorDetails = await Doctor.find({ department: updatedDoctor.department });
-            const ids = doctorDetails.map(doc => doc._id);
+            const ids = doctorDetails.map(doc => {
+              const leaveArr = doc.leaveSchedule;
+              let isAvailable = true;
+              leaveArr.forEach(leave => {
+                if (leave.startTime <= appointmentTime && appointmentTime < leave.endTime) {
+                  isAvailable = false;
+                }
+              })
+              if (isAvailable) {
+                return doc._id
+              }
+            });
 
             await Promise.all(ids.map(async (doctorId) => {
-              const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment: data.dateOfAppointment });
+              const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment: data.dateOfAppointment.toISOString().substring(0, 10) });
               let count = 0;
               appointments.forEach(el => {
                 if (el.slot === data.slot)
@@ -405,7 +417,7 @@ exports.scheduleLeave = async (req, res) => {
 
             if (assignedDoctor.length === 0) {
               try {
-                const patient = await patient.findById(data.patient);
+                const patient = await Patient.findById(data.patient);
                 const emailID = patient.email;
                 try {
                   const mailResponse = await sendMail(
@@ -415,12 +427,12 @@ exports.scheduleLeave = async (req, res) => {
                   );
                   console.log("Email sent successfully: ", mailResponse.response);
                 } catch (error) {
-                  console.log("Error occurred while sending email: ", error);
-                  throw error;
+                  console.log("Cannot send email to patient: ", patient);
+                  console.log("Error: ", error.message);
                 }
                 // send email to patient
               } catch (error) {
-                console.log("Cannot send email to patient: ", patient);
+                console.log("Error occurred while sending email: ", error);
                 console.log("Error: ", error.message);
               }
               return;
@@ -436,7 +448,8 @@ exports.scheduleLeave = async (req, res) => {
               },
               { new: true }
             );
-            console.log(updatedAppointment);
+            console.log("Rescheduled: ", updatedAppointment._id);
+            // console.log(updatedAppointment);
           }
         }));
 

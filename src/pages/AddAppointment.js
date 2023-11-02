@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import NewAppointment from '../components/Appointment/NewAppointment';
 
-const AddAppointment = (props) => {
+const AddAppointment = () => {
     return (
         <div>
             <Navbar />

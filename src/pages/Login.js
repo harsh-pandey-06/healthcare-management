@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import bgimage from "../assets/iitgbg.jpeg";
 import iitglogo from "../assets/iitg_logo.jpg";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -28,16 +28,12 @@ const Login = (props) => {
       );
       console.log(response.data);
       if (response.data.success === true) {
-        // setUser(response.data.userId);
         navigate("/dashboard");
       }
-      {
-        response.data.success === true
-          ? toast.success("Logged in successfully") && localStorage.setItem("userInfo", JSON.stringify(response.data.token))
-          : toast.error(response.data.message);
-      }
 
-
+      response.data.success === true
+        ? toast.success("Logged in successfully") && localStorage.setItem("userInfo", JSON.stringify(response.data.token))
+        : toast.error(response.data.message);
     } catch (error) {
       toast.error("Server error");
     }
@@ -50,7 +46,7 @@ const Login = (props) => {
     >
       <div className="bg-white p-10 w-[30rem] shadow-xl">
         <div className="flex mb-4">
-          <img src={iitglogo} />
+          <img src={iitglogo} alt={"IIT Guwahati logo"} />
         </div>
 
         <div className="capitalize text-gray-950 text-2xl font-semibold">
