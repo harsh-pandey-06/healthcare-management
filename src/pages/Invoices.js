@@ -1,6 +1,7 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
+import PreviousAppointments from '../components/Patient/PreviousAppointments';
 
 const Invoices = () => {
     return (
@@ -11,7 +12,9 @@ const Invoices = () => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <div>Invoices</div>
+                    <div>
+                    <PreviousAppointments/>
+                    </div>
                 </div>
             </div>
         </div>

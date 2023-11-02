@@ -110,7 +110,7 @@ const UpcomingAppointments = () => {
                     <ListofAppointments />
                 </div>
             </div>
-        </LocalizationProvider >
+        </LocalizationProvider>
     )
 }
 
