@@ -101,11 +101,6 @@ const UpcomingAppointments = () => {
                         </button>
                     </div>
                 }
-                <div className="flex flex-row my-6 font-bold text-xs items-center justify-between">
-                    Upcoming Appointments
-                    <div className="bg-gray-400 h-[1px] w-9/12"></div>
-                </div>
-
                 <div>
                     <ListAppointments />
                 </div>

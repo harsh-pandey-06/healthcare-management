@@ -21,7 +21,6 @@ const NewPatient = () => {
   const { firstName, lastName, email, password, patientId, gender, bloodGroup,
     mobile, age, address, state, city, pinCode } = formData;
 
-
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,

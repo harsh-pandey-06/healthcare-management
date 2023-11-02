@@ -207,7 +207,6 @@ const NewAppointment = () => {
 
 
     const handleClickBookAppointment = async () => {
-        //TODO: integrate create Appointment
         const toastId = toast.loading('Loading...');
 
         try {

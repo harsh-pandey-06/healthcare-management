@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import PreviousAppointments from '../components/Patient/PreviousAppointments';
 
-const Invoices = () => {
+const AppointmentHistory = () => {
     return (
         <div>
             <Navbar />
@@ -13,7 +13,7 @@ const Invoices = () => {
                 </div>
                 <div className='w-4/5'>
                     <div>
-                    <PreviousAppointments/>
+                        <PreviousAppointments />
                     </div>
                 </div>
             </div>
@@ -21,4 +21,4 @@ const Invoices = () => {
     )
 }
 
-export default Invoices
+export default AppointmentHistory

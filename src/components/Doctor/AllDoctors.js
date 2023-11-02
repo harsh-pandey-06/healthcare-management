@@ -13,21 +13,17 @@ import toast from "react-hot-toast";
 import { useEffect } from "react";
 
 const columns = [
-    { id: "name", label: "Name", minWidth: 170 },
-    { id: "department", label: "Department", minWidth: 100 },
-    {
-        id: "email",
-        label: "Email",
-        minWidth: 170,
-        align: "right",
-        format: (value) => value.toLocaleString("en-US"),
-    },
+  { id: "name", label: "Name", minWidth: 170 },
+  { id: "department", label: "Department", minWidth: 100 },
+  {
+    id: "email",
+    label: "Email",
+    minWidth: 170,
+    align: "right",
+    format: (value) => value.toLocaleString("en-US"),
+  },
 ];
-const rows = [];
-
-function createData(name, department, email) {
-  return { name, department, email };
-}
+let rows = [];
 
 export default function AllDoctors() {
   const [page, setPage] = React.useState(0);
@@ -56,19 +52,16 @@ export default function AllDoctors() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  if(rowData)
-  {
-    console.log(rowData)
+  if (rowData) {
+    rows = [];
     for (let i = 0; i < rowData?.length; i++) {
       rows.push({
         name: rowData[i].firstname + " " + rowData[i].lastname,
         department: rowData[i].department,
         email: rowData[i].email,
       });
-    } 
-   
+    }
   }
-   console.log("hi");
   //   console.log(rows);
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>

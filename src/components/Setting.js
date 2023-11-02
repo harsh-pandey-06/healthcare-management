@@ -3,11 +3,12 @@ import { useState } from "react";
 import profilePic from "../assets/iitg_logo.jpg"
 import axios from 'axios'
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import { UserState } from "../Context/UserProvider";
+import { useNavigate } from "react-router-dom";
 
 const Setting = () => {
-  const { user, getUserFromToken } = UserState();
+  const { user, setUser, getUserFromToken } = UserState();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
@@ -85,24 +86,17 @@ const Setting = () => {
 
   };
 
-  const logOutHandler = () => {
-    toast.success("Logged out successfully");
+  const handleLogOut = () => {
+    localStorage.removeItem("userInfo");
+    setUser(null);
+    navigate("/");
   }
 
   return (
     <div className='flex flex-col m-8'>
-      <div className="flex justify-between">
-        <div className='font-bold text-2xl'>
-          Update Profile
-        </div>
-        <Link to="/" type="button" onClick={logOutHandler} className='bg-red-500 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
-          <span>
-            Log Out
-          </span>
-        </Link>
+      <div className='font-bold text-2xl'>
+        Update Profile
       </div>
-
-
       <form onSubmit={handleOnSubmit}>
         <div className='flex flex-row mt-6 font-bold text-xs items-center justify-between'>
           Personal Details
@@ -285,16 +279,19 @@ const Setting = () => {
               className='bg-gray-100 rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2' placeholder='' />
           </div>
         </div>
-        <div>
+        <div className="flex justify-between mt-4">
           <button type="submit" className='bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium mt-4'>
             <span>
               Update Details
             </span>
           </button>
+          <button type="button" className='bg-red-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium mt-4' onClick={handleLogOut}>
+            <span>
+              Logout
+            </span>
+          </button>
         </div>
       </form>
-
-
     </div>
   )
 }

@@ -3,7 +3,7 @@ import { AiOutlinePieChart, AiOutlineUser } from 'react-icons/ai';
 import { FaStethoscope, FaAngleDown } from 'react-icons/fa6';
 import { TbFileInvoice } from 'react-icons/tb';
 import { IoHelpCircleOutline, IoSettingsOutline } from 'react-icons/io5';
-import { BsCalendar4Week, BsChatLeftDots } from 'react-icons/bs';
+import { BsCalendar4Week } from 'react-icons/bs';
 import { NavLink } from "react-router-dom";
 import { UserState } from '../Context/UserProvider';
 
@@ -21,10 +21,6 @@ const Sidebar = () => {
                 <AiOutlinePieChart />
                 <span className='text-base'>Dashboard</span>
             </NavLink>
-            <NavLink to="/patient" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
-                <AiOutlineUser />
-                <span className='text-base'>Patients</span>
-            </NavLink>
             <NavLink to="/doctor" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
                 <FaStethoscope />
                 <span className='text-base'>Doctors</span>
@@ -33,14 +29,11 @@ const Sidebar = () => {
                 <BsCalendar4Week />
                 <span className='text-base'>Calendar</span>
             </NavLink>
-            <NavLink to="/chat" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
-                <BsChatLeftDots />
-                <span className='text-base'>Chat</span>
-            </NavLink>
+
             <div className='h-[1px] my-5 bg-gray-200' />
-            <NavLink to="/invoices" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
+            <NavLink to="/appointmentHistory" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
                 <TbFileInvoice />
-                <span className='text-base'>Invoices</span>
+                <span className='text-base'>Appointment History</span>
             </NavLink>
             <NavLink to="/help" className={`text-gray-400 hover:text-slate-800 aria-[current=page]:bg-blue-500 aria-[current=page]:text-white rounded flex gap-3 items-center px-8 py-3 mx-1 cursor-pointer font-medium text-lg`}>
                 <IoHelpCircleOutline />
