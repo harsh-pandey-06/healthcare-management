@@ -264,7 +264,7 @@ const NewAppointment = () => {
 
             <div className="flex flex-col m-8">
                 <div className="flex font-bold text-2xl">New Appointment</div>
-                <form onSubmit={handleOnSubmit}>
+                <form>
                     {
                         (!user || user.role !== "patient") &&
                         <>
