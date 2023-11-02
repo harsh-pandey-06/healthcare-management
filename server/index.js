@@ -2,6 +2,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
 const corsOptions = {
   origin: "*",
   credentials: true, //access-control-allow-credentials:true
@@ -32,20 +33,40 @@ app.use("/api/v1/auth/patient", patientRoutes);
 app.use("/api/v1/auth/doctor", doctorRoutes);
 app.use("/api/v1/appointment", appointmentRoutes);
 
-app.post('/api/v1//checkToken', (req, res) => {
+app.post('/api/v1/checkToken', (req, res) => {
   try {
     const token = req.body.jwt;
-    if (token == null) return res.status(401).json({ result: "User not found" });
+    if (!token) {
+      res.status(200).json({
+        success: false,
+        message: 'User not found',
+        error: error.message,
+      });
+    }
     else {
-      jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
-        if (err) return res.status(401).send(err);
-        req.user = user;
-        return res.status(200).send({ user: user });
+      jwt.verify(token, process.env.JWT_SECRET, (error, user) => {
+        if (error) {
+          res.status(401).json({
+            success: false,
+            message: 'Error in verifying token',
+            error: error.message,
+          });
+        }
+        res.status(200).json({
+          success: true,
+          message: 'Token validated successfully',
+          user: user,
+        });
       });
     }
   }
-  catch (err) {
-    return res.status(500).send(err);
+  catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to validate token',
+      error: error.message,
+    });
   }
 });
 

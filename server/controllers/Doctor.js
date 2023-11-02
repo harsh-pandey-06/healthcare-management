@@ -101,7 +101,7 @@ exports.login = async (req, res) => {
 
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign(
-        { email: user.email, id: user._id, role: user.role },
+        { email: user.email, id: user._id, role: "doctor" },
         process.env.JWT_SECRET,
         {
           expiresIn: "24h",
@@ -436,6 +436,7 @@ exports.scheduleLeave = async (req, res) => {
               },
               { new: true }
             );
+            console.log(updatedAppointment);
           }
         }));
 

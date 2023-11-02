@@ -30,9 +30,6 @@ exports.sendOtp = async (req, res) => {
       specialChars: false,
     })
     const result = await OTP.findOne({ otp: otp })
-    console.log("Result is Generate OTP Func")
-    console.log("OTP", otp)
-    console.log("Result", result)
     while (result) {
       otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
@@ -40,7 +37,6 @@ exports.sendOtp = async (req, res) => {
     }
     const otpPayload = { email, otp }
     const otpBody = await OTP.create(otpPayload)
-    console.log("OTP Body", otpBody)
     res.status(200).json({
       success: true,
       message: `OTP Sent Successfully`,
@@ -162,7 +158,7 @@ exports.login = async (req, res) => {
     // console.log("password match");
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign(
-        { email: user.email, id: user._id, role: user.role },
+        { email: user.email, id: user._id, role: "patient" },
         process.env.JWT_SECRET,
         {
           expiresIn: "24h",
