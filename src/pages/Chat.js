@@ -15,8 +15,6 @@ const Chat = () => {
                     <ul>
                         <li>In calendar, show appointments by date. Handle for both doctor and patient using the role. Only show future appointments</li>
                         <li>Change invocies page to show appointment history. Only show past appointments</li>
-                        <li>In profile, show user details</li>
-                        <li>In settings, user can edit profile details, and also add a logout button in settings</li>
                         <li>Help can contain some FAQs and send emails to admins regarding technical difficulty (optional)</li>
                         <li>Chat page will be closed</li>
                     </ul>

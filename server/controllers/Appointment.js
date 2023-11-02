@@ -54,7 +54,7 @@ exports.createAppointment = async (req, res) => {
             startHour = 18;
             endHour = 20;
           }
-          const appointmentTime = dateOfAppointment?.setHours(startHour, 0);
+          const appointmentTime = new Date(dateOfAppointment)?.setHours(startHour, 0);
 
           const ids = doctorDetails.map(doc => {
             const leaveArr = doc.leaveSchedule;
