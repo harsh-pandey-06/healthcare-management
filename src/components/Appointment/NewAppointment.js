@@ -237,8 +237,6 @@ const NewAppointment = () => {
         }
     };
 
-    const handleOnSubmit = (e) => {};
-
     return (
         <>
             <Modal open={openSuccessModal} onClose={handleCloseSuccessModal}>

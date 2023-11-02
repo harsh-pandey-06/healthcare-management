@@ -20,8 +20,6 @@ import Otp from './pages/Otp';
 
 function App() {
   const [role, setRole] = useState("patient");
-  const { token, setToken } = UserState();
-  console.log(token);
 
   return (
     <div className="App">
