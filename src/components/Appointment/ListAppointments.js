@@ -483,7 +483,7 @@ const ListAppointments = () => {
                     <button
                       type="button"
                       className="bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium mt-4"
-                      onClick={() => handleClickRescheduleAppointment(data._id, data.data)}
+                      onClick={() => handleClickRescheduleAppointment(data._id, data.department)}
                     >
                       <span>Reschedule Appointment</span>
                     </button>

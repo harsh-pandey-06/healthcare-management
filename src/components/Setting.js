@@ -44,8 +44,8 @@ const Setting = () => {
     console.log(response.data.data);
     setFormData((prevData) => ({
       ...prevData,
-      firstName: response.data.data.firstName,
-      lastName: response.data.data.lastName,
+      firstName: response.data.data.firstName ?? response.data.data.firstname,
+      lastName: response.data.data.lastName ?? response.data.data.lastname,
       rollno: response.data.data.rollno,
       dateOfBirth: response.data.data.dateOfBirth.substr(0, 10),
       gender: response.data.data.gender,

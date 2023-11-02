@@ -255,8 +255,8 @@ exports.checkIfAlreadyBooked = async (req, res) => {
 
 exports.rescheduleAppointment = async (req, res) => {
   try {
-    const {  slot,  dateOfAppointment, department, id } = req.body;
-
+    const { slot, dateOfAppointment, department, id } = req.body;
+    console.log(req.body);
     if (!slot || !dateOfAppointment || !department || !id) {
       return res.status(200).send({
         success: false,
@@ -353,7 +353,7 @@ exports.rescheduleAppointment = async (req, res) => {
           const doctor = assignedDoctor.sort((a, b) => a.count - b.count)[0]
             .doctorId;
 
-          appointment = await Appointment.findOneAndUpdate({ _id: id },{
+          appointment = await Appointment.findOneAndUpdate({ _id: id }, {
             doctor,
             slot,
             dateOfAppointment,
