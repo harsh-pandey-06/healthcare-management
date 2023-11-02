@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import ListItem from './ListItem';
 import { UserState } from '../../Context/UserProvider';
+import dayjs from 'dayjs';
 
 const ListAppointments = () => {
   const [appointment, setAppointment] = useState([]);
@@ -74,7 +75,7 @@ const ListAppointments = () => {
         appointment.map(data => (
           // console.log(data.title);
           <>
-            <div>{data.title}</div>
+            <div className='font-bold text-xl mt-8'>Appointments on:  {dayjs(data.title).format('D MMM YYYY')}</div>
             {
               data.value.map((data) => (
                 <ListItem key={data._id} value={data} />
