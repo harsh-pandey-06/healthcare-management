@@ -1,19 +1,36 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UserContext = createContext();
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState();
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState();
+  const navigate = useNavigate();
 
-  // const getUserFromToken=()=>{
-
-  // };
+  const getUserFromToken = async () => {
+    const localToken = JSON.parse(localStorage.getItem("userInfo"));
+    if (!token) {
+      if (localToken) {
+        setToken(localToken);
+      }
+      else {
+        navigate("/");
+        return;
+      }
+    }
+    const data = {
+      jwt: localToken
+    };
+    const response = await axios.post("http://localhost:4000/api/v1/checkToken", data);
+    setUser(response.data.user);
+  };
 
   useEffect(() => {
     const localToken = JSON.parse(localStorage.getItem("userInfo"));
     if (localToken) {
-      setUser(localToken);
+      setToken(localToken);
     }
   }, []);
 
@@ -21,9 +38,8 @@ const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         user,
-        setUser,
-        token,
-        setToken
+        setToken,
+        getUserFromToken
       }}
     >
       {children}

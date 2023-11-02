@@ -1,6 +1,5 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 require("dotenv").config();
 const otpGenerator = require("otp-generator");
 const Patient = require("../models/patient");
@@ -10,14 +9,9 @@ exports.sendOtp = async (req, res) => {
   try {
     const { email } = req.body
 
-    // Check if user is already present
-    // Find user with provided email
     const checkUserPresent = await Patient.findOne({ email })
-    // to be used in case of signup
     console.log(email);
-    // If user found with provided email
     if (checkUserPresent) {
-      // Return 401 Unauthorized status code with error message
       return res.status(401).json({
         success: false,
         message: `User is Already Registered`,
@@ -158,7 +152,7 @@ exports.login = async (req, res) => {
     // console.log("password match");
     if (await bcrypt.compare(password, user.password)) {
       const token = jwt.sign(
-        { email: user.email, id: user._id, role: "patient" },
+        { firstname: user.firstName, lastname: user.lastName, email: user.email, id: user._id, role: "patient" },
         process.env.JWT_SECRET,
         {
           expiresIn: "24h",

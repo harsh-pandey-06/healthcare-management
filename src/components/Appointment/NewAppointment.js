@@ -9,7 +9,6 @@ import { AiOutlineClose } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { UserState } from "../../Context/UserProvider";
-import { useLocation } from "react-router-dom";
 
 const style = {
     position: "absolute",
@@ -22,13 +21,19 @@ const style = {
 };
 
 const NewAppointment = () => {
-    const role  = "Patient";
-    const [loggedUser,setLoggedUser]=useState();
-    const { user } = UserState();
+    const { user, getUserFromToken } = UserState();
 
     useEffect(() => {
-        fetchData();
-     }, []);
+        if (!user) {
+            getUserFromToken();
+        }
+    }, [])
+
+    useEffect(() => {
+        if (user) {
+            fetchData();
+        }
+    }, [user]);
 
     const [slots, setSlots] = useState({
         slot8to10: "",
@@ -76,16 +81,13 @@ const NewAppointment = () => {
     const handleOpenSuccessModal = () => setOpenSuccessModal(true);
     const handleCloseSuccessModal = () => setOpenSuccessModal(false);
 
-    
-    
+
+
     const fetchData = async () => {
-        // setLoggedUser(user);
-        let profile = JSON.parse(localStorage.getItem("userInfo"));
         const response = await axios.get(
-          `http://localhost:4000/api/v1/auth/patient/getById`,
-          { params: { id: profile } }
+            `http://localhost:4000/api/v1/auth/patient/getById`,
+            { params: { id: user.id } }
         );
-        // console.log(response.data.data);
         setFormData((prevData) => ({
             ...prevData,
             firstName: response.data.data?.firstName,
@@ -98,7 +100,7 @@ const NewAppointment = () => {
             email: response.data.data?.email,
         }));
     };
-    // fetchData();
+
     const getAvailaibility = async () => {
         const toastId = toast.loading('Loading...');
         try {
@@ -156,9 +158,6 @@ const NewAppointment = () => {
             [e.target.name]: e.target.value,
         }));
     };
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
 
     const handleClickCheckAvailibility = () => {
         if (!department) {
@@ -175,11 +174,11 @@ const NewAppointment = () => {
 
         try {
             const data = {
-              patient: loggedUser,
-              department,
-              slot,
-              symptoms,
-              dateOfAppointment,
+                patient: user,
+                department,
+                slot,
+                symptoms,
+                dateOfAppointment,
             };
             const response = await axios.post("http://localhost:4000/api/v1/appointment/create", data);
             console.log(response.data);
@@ -230,131 +229,136 @@ const NewAppointment = () => {
             <div className="flex flex-col m-8">
                 <div className="flex font-bold text-2xl">New Appointment</div>
                 <form onSubmit={handleOnSubmit}>
-                    <div className="flex flex-row my-6 font-bold text-xs items-center justify-between">
-                        Patient Details
-                        <div className="bg-gray-400 h-[1px] w-10/12"></div>
-                    </div>
+                    {
+                        (!user || user.role !== "patient") &&
+                        <>
+                            <div className="flex flex-row my-6 font-bold text-xs items-center justify-between">
+                                Patient Details
+                                <div className="bg-gray-400 h-[1px] w-10/12"></div>
+                            </div>
 
-                    <div className="flex gap-12 justify-between">
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                Patient ID <span className="text-red-400">*</span>
+                            <div className="flex gap-12 justify-between">
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        Patient ID <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="patientId"
+                                        value={patientId}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 w-full rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        First Name <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="firstName"
+                                        value={firstName}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        Last Name <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="lastName"
+                                        value={lastName}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
                             </div>
-                            <input
-                                required
-                                type="text"
-                                name="patientId"
-                                value={patientId}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 w-full rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                First Name <span className="text-red-400">*</span>
-                            </div>
-                            <input
-                                required
-                                type="text"
-                                name="firstName"
-                                value={firstName}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                Last Name <span className="text-red-400">*</span>
-                            </div>
-                            <input
-                                required
-                                type="text"
-                                name="lastName"
-                                value={lastName}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                    </div>
 
-                    <div className="flex gap-12 mt-8 justify-between">
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                DOB <span className="text-red-400">*</span>
+                            <div className="flex gap-12 mt-8 justify-between">
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        DOB <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="date"
+                                        name="dateOfBirth"
+                                        value={dateOfBirth}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        Gender <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="gender"
+                                        value={gender}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="flex flex-col w-1/4">
+                                    <div>
+                                        Blood Group <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="text"
+                                        name="bloodGroup"
+                                        value={bloodGroup}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
                             </div>
-                            <input
-                                required
-                                type="date"
-                                name="dateOfBirth"
-                                value={dateOfBirth}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                Gender <span className="text-red-400">*</span>
-                            </div>
-                            <input
-                                required
-                                type="text"
-                                name="gender"
-                                value={gender}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-1/4">
-                            <div>
-                                Blood Group <span className="text-red-400">*</span>
-                            </div>
-                            <input
-                                required
-                                type="text"
-                                name="bloodGroup"
-                                value={bloodGroup}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                    </div>
 
-                    <div className="flex gap-8 justify-between mt-8">
-                        <div className="flex flex-col w-5/12">
-                            <div>
-                                Mobile Number <span className="text-red-400">*</span>
+                            <div className="flex gap-8 justify-between mt-8">
+                                <div className="flex flex-col w-5/12">
+                                    <div>
+                                        Mobile Number <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="number"
+                                        name="mobile"
+                                        value={mobile}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
+                                <div className="flex flex-col w-6/12">
+                                    <div>
+                                        Email Id <span className="text-red-400">*</span>
+                                    </div>
+                                    <input
+                                        required
+                                        type="email"
+                                        name="email"
+                                        value={email}
+                                        onChange={handleOnChange}
+                                        className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
+                                        placeholder=""
+                                    />
+                                </div>
                             </div>
-                            <input
-                                required
-                                type="number"
-                                name="mobile"
-                                value={mobile}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                        <div className="flex flex-col w-6/12">
-                            <div>
-                                Email Id <span className="text-red-400">*</span>
-                            </div>
-                            <input
-                                required
-                                type="email"
-                                name="email"
-                                value={email}
-                                onChange={handleOnChange}
-                                className="bg-gray-100 rounded px-4 w-full py-2 focus:outline-none border-none text-slate-600 mt-2"
-                                placeholder=""
-                            />
-                        </div>
-                    </div>
+                        </>
+                    }
 
                     <div className="flex flex-row mt-10 mb-6 font-bold text-xs items-center justify-between">
                         Appointment Details

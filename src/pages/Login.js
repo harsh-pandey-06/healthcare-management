@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 
 const Login = (props) => {
   const navigate = useNavigate();
-  const { role, setRole } = props;
+  const { role } = props;
   const [showPassword, setshowPassword] = useState(false);
 
   const [email, setEmail] = useState();
@@ -19,8 +19,6 @@ const Login = (props) => {
       toast.error("All fields required");
       return;
     }
-
-    // console.log(email, password);
 
     try {
       const data = { email, password };

@@ -40,7 +40,6 @@ app.post('/api/v1/checkToken', (req, res) => {
       res.status(200).json({
         success: false,
         message: 'User not found',
-        error: error.message,
       });
     }
     else {
