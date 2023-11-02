@@ -4,7 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { renderTimeViewClock } from '@mui/x-date-pickers/timeViewRenderers';
-import ListofAppointments from './ListofAppointments';
+import ListAppointments from './ListAppointments';
 import toast from "react-hot-toast";
 import axios from "axios";
 import { UserState } from '../../Context/UserProvider';
@@ -107,7 +107,7 @@ const UpcomingAppointments = () => {
                 </div>
 
                 <div>
-                    <ListofAppointments />
+                    <ListAppointments />
                 </div>
             </div>
         </LocalizationProvider >

@@ -3,12 +3,13 @@ import React from "react";
 
 const ListItem = (props) => {
   const { value } = props;
-  console.log(value)
-  let slotPairs={ slot8to10:"8 A.M. to 10 A.M.",
-                  slot10to12:"10 A.M. to 12 P.M.",
-                  slot12to2:"12 P.M. to 2 P.M.",
-                  slot2to4:"2 P.M. to 4 P.M.",
-                  slot4to6:"4 P.M. to 6 P.M."};
+  let slotPairs = {
+    slot8to10: "8 A.M. to 10 A.M.",
+    slot10to12: "10 A.M. to 12 P.M.",
+    slot12to2: "12 P.M. to 2 P.M.",
+    slot2to4: "2 P.M. to 4 P.M.",
+    slot4to6: "4 P.M. to 6 P.M."
+  };
   return (
     <div className="w-full shadow-xl p-5 rounded-lg">
       <div>
