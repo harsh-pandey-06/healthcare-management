@@ -105,15 +105,54 @@ const NewAppointment = () => {
         try {
             const response = await axios.get(`http://localhost:4000/api/v1/auth/doctor/fetchByDept`, { params: { department } });
 
-            // get doctor ids of particular dept
-            const ids = response.data.data.map(doc => doc._id);
+            const doctorDetails = response.data.data;
+
+            let startHour = 0, endHour = 0;
+            if (slot === "slot8to10") {
+                startHour = 8;
+                endHour = 10;
+            }
+            else if (slot === "slot10to12") {
+                startHour = 10;
+                endHour = 12;
+            }
+            else if (slot === "slot12to2") {
+                startHour = 12;
+                endHour = 14;
+            }
+            else if (slot === "slot2to4") {
+                startHour = 14;
+                endHour = 16;
+            }
+            else if (slot === "slot4to6") {
+                startHour = 16;
+                endHour = 18;
+            }
+            else if (slot === "slot6to8") {
+                startHour = 18;
+                endHour = 20;
+            }
+            const appointmentTime = dateOfAppointment?.setHours(startHour, 0);
+
+            const ids = doctorDetails.map(doc => {
+                const leaveArr = doc.leaveSchedule;
+                let isAvailable = true;
+                leaveArr.forEach(leave => {
+                    if (leave.startTime <= appointmentTime && appointmentTime < leave.endTime) {
+                        isAvailable = false;
+                    }
+                })
+                if (isAvailable) {
+                    return doc._id
+                }
+            });
 
             let countMap = {};
 
             await Promise.all(ids.map(async (doctorId) => {
                 const appointments = await axios.get(`http://localhost:4000/api/v1/appointment/getAppointmentsByDoctorId`, { params: { doctorId } });
                 appointments.data.data.forEach(data => {
-                    if (data?.dateOfAppointment?.substring(0, 10) === dateOfAppointment) {
+                    if (data?.dateOfAppointment?.substring(0, 10) === dateOfAppointment && data?.status === "Approved") {
                         if (countMap[data.slot] === undefined) {
                             countMap[data.slot] = 1;
                         } else {

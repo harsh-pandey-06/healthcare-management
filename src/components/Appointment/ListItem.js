@@ -6,44 +6,20 @@ const ListItem = (props) => {
   return (
     <div className="w-full shadow-xl p-5 rounded-lg">
       <div>
-        <span className="text-lg font-medium">Name: </span>Rahul Kumar
+        <span className="text-lg font-medium">Name: </span>{value.patient.firstName + " " + value.patient.lastName}
       </div>
       <div>
-        <span className="text-lg font-medium">Patient Id: </span>122819
+        <span className="text-lg font-medium">Patient Id: </span>{value.patient.rollno}
       </div>
       <div>
-        <span className="text-lg font-medium">Preferred slot: </span>12 PM to
-        2PM
+        <span className="text-lg font-medium">Preferred slot: </span>{value.slot}
       </div>
       <div>
         <span className="text-lg font-medium">Department: </span>ENT
       </div>
       <div>
         <span className="text-lg font-medium">Reason: </span>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla sodales
-        vel orci sit amet viverra. In ac nulla at tellus eleifend tincidunt
-        ultrices id augue. Sed dignissim aliquam sem, ut vestibulum ante. Proin
-        ultricies eros est, et cursus erat efficitur ac. Integer euismod
-        dignissim massa. Praesent maximus laoreet metus vel sagittis. Nullam ut
-        luctus mi, in malesuada turpis. Sed nec turpis quis enim pharetra varius
-        eget non magna. Nullam eget nulla nunc. Duis condimentum, orci posuere
-        mollis pellentesque, massa nunc varius nisl, et elementum tellus felis
-        eget nisl. Nulla vitae est semper, blandit velit sit amet, varius nisi.
-        Ma
-      </div>
-      <div className="flex gap-2">
-        <button
-          type="button"
-          className="bg-blue-500 flex items-center justify-between gap-2 cursor-pointer text-white px-12 py-3 rounded-lg text-sm font-medium mt-4"
-        >
-          Accept
-        </button>
-        <button
-          type="button"
-          className="bg-red-500 flex items-center justify-between gap-2 cursor-pointer text-white px-12 py-3 rounded-lg text-sm font-medium mt-4"
-        >
-          Reject
-        </button>
+        {value.symptoms}
       </div>
     </div>
   );

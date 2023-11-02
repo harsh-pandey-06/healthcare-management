@@ -13,14 +13,10 @@ const Chat = () => {
                 <div className='w-4/5'>
                     <div>Remarks</div>
                     <ul>
-                        <li>Doctor taking leave - Reschedule or notify patient</li>
-                        <li>May need use of cron jobs to make doctor available after leave period ends</li>
-                        <li>Manage state using react redux</li>
-                        <li>In doctor, show list of all doctors</li>
-                        <li>In calendar, show appointments by date</li>
+                        <li>In calendar, show appointments by date. Handle for both doctor and patient using the role. Only show future appointments</li>
+                        <li>Change invocies page to show appointment history. Only show past appointments</li>
                         <li>In profile, show user details</li>
                         <li>In settings, user can edit profile details, and also add a logout button in settings</li>
-                        <li>Change invocies page to show appointment history</li>
                         <li>Help can contain some FAQs and send emails to admins regarding technical difficulty (optional)</li>
                         <li>Chat page will be closed</li>
                     </ul>

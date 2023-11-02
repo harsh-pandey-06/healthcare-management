@@ -70,7 +70,7 @@ exports.createAppointment = async (req, res) => {
           });
 
           await Promise.all(ids.map(async (doctorId) => {
-            const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment });
+            const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment, status: "Approved" });
             let count = 0;
             appointments.forEach(data => {
               if (data.slot === slot)
@@ -201,6 +201,51 @@ exports.getAllAppointments = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+exports.checkIfAlreadyBooked = async (req, res) => {
+  try {
+    const { patient, department, slot, dateOfAppointment } = req.body;
+
+    if (!patient || !department || !slot || !dateOfAppointment) {
+      return res.status(200).send({
+        success: false,
+        message: "All Fields are required",
+      });
+    }
+
+    const appointmentDetails = await Appointment.find({ patient, department, status: "Approved" });
+    if (appointmentDetails.length > 0) {
+      return res.status(200).send({
+        success: true,
+        message: "Checked successfully",
+        data: false
+      });
+    }
+
+    const sameSlotAppointments = await Appointment.find({ patient, slot, dateOfAppointment, status: "Approved" });
+    if (sameSlotAppointments.length > 0) {
+      return res.status(200).send({
+        success: true,
+        message: "Checked successfully",
+        data: false
+      });
+    }
+    else {
+      return res.status(200).send({
+        success: true,
+        message: "Checked successfully",
+        data: true
+      });
+    }
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Unable to process request. Please try again.",
     });
   }
 };

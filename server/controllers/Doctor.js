@@ -403,7 +403,7 @@ exports.scheduleLeave = async (req, res) => {
             });
 
             await Promise.all(ids.map(async (doctorId) => {
-              const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment: data.dateOfAppointment.toISOString().substring(0, 10) });
+              const appointments = await Appointment.find({ doctor: doctorId, dateOfAppointment: data.dateOfAppointment.toISOString().substring(0, 10), status: "Approved" });
               let count = 0;
               appointments.forEach(el => {
                 if (el.slot === data.slot)
@@ -422,7 +422,7 @@ exports.scheduleLeave = async (req, res) => {
                 try {
                   const mailResponse = await sendMail(
                     emailID,
-                    "Verification Email",
+                    "Reschedule appointment",
                     rescheduleTemplate()
                   );
                   console.log("Email sent successfully: ", mailResponse.response);
