@@ -54,7 +54,7 @@ exports.createAppointment = async (req, res) => {
             startHour = 18;
             endHour = 20;
           }
-          const appointmentTime = dateOfAppointment?.setHours(startHour, 0);
+          const appointmentTime = new Date(dateOfAppointment)?.setHours(startHour, 0);
 
           const ids = doctorDetails.map(doc => {
             const leaveArr = doc.leaveSchedule;
@@ -156,7 +156,7 @@ exports.getAppointmentDetails = async (req, res) => {
 
 exports.getAppointmentsByPatientId = async (req, res) => {
   try {
-    const patient = req.query.patientId;
+    const patient = req.query.id;
     const appointmentDetails = await Appointment.find({ patient });
     res.status(200).json({
       success: true,
@@ -173,7 +173,7 @@ exports.getAppointmentsByPatientId = async (req, res) => {
 
 exports.getAppointmentsByDoctorId = async (req, res) => {
   try {
-    const doctor = req.query.doctorId;
+    const doctor = req.query.id;
     const appointmentDetails = await Appointment.find({ doctor })
       .populate("patient")
       .exec();
