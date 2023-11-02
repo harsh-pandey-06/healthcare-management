@@ -2,11 +2,8 @@ import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import Profile from '../components/profile'
-import { useState } from "react";
-import axios from "axios";
 
 const UserProfile = (props) => {
-   const {user,role} = props;
     return (
         <div>
             <Navbar />
@@ -15,7 +12,7 @@ const UserProfile = (props) => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <Profile user={user}/>
+                    <Profile />
                 </div>
             </div>
         </div>

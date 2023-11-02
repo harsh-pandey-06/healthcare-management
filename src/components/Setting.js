@@ -4,9 +4,23 @@ import profilePic from "../assets/iitg_logo.jpg"
 import axios from 'axios'
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { UserState } from "../Context/UserProvider";
 
-const Setting = (props) => {
-  const { user, role } = props;
+const Setting = () => {
+  const { user, getUserFromToken } = UserState();
+
+  useEffect(() => {
+    if (!user) {
+      getUserFromToken();
+    }
+  }, [])
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -24,29 +38,29 @@ const Setting = (props) => {
   const { firstName, lastName, email, rollno, gender, bloodGroup,
     mobile, dateOfBirth, address, state, city, pincode } = formData;
 
-    const fetchData = async () => {
-        const response = await axios.get(`http://localhost:4000/api/v1/auth/patient/getById`, { params: { id: user } });
-        console.log(response.data.data);
-        setFormData((prevData) => ({
-            ...prevData,
-            firstName: response.data.data.firstName,
-            lastName: response.data.data.lastName,
-            rollno: response.data.data.rollno,
-            dateOfBirth: response.data.data.dateOfBirth.substr(0, 10),
-            gender: response.data.data.gender,
-            bloodGroup: response.data.data.bloodGroup,
-            mobile: response.data.data.mobile,
-            email: response.data.data.email,
-            state: response.data.data.state,
-            city:response.data.data.city,
-            pincode:response.data.data.pincode,
-            address:response.data.data.address,
-        }));
-    };
-    
-    useEffect(() => {
-        fetchData();
-    }, []);
+  const fetchData = async () => {
+    const response = await axios.get(`http://localhost:4000/api/v1/auth/patient/getById`, { params: { id: user.id } });
+    console.log(response.data.data);
+    setFormData((prevData) => ({
+      ...prevData,
+      firstName: response.data.data.firstName,
+      lastName: response.data.data.lastName,
+      rollno: response.data.data.rollno,
+      dateOfBirth: response.data.data.dateOfBirth.substr(0, 10),
+      gender: response.data.data.gender,
+      bloodGroup: response.data.data.bloodGroup,
+      mobile: response.data.data.mobile,
+      email: response.data.data.email,
+      state: response.data.data.state,
+      city: response.data.data.city,
+      pincode: response.data.data.pincode,
+      address: response.data.data.address,
+    }));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
@@ -54,43 +68,42 @@ const Setting = (props) => {
       [e.target.name]: e.target.value,
     }))
   }
-  
+
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Pringting the form daa: ",formData);
-      try {
-        const response = await axios.put(
-          `http://localhost:4000/api/v1/auth/patient/updatePatient`,
-         { id: user, formData },
-          {headers: { 'Content-Type': 'application/json' }}
-        );
-  
-        console.log("Updated Successfully");
-        toast.success("Profile Updated Successfully");
-        console.log(response);
-      } catch (error) {
-        console.error("Error updating patient data:", error);
-        toast.error("Unknown Error Occured");
-      }
-  
-    // fetchData();
+    console.log("Pringting the form daa: ", formData);
+    try {
+      const response = await axios.put(
+        `http://localhost:4000/api/v1/auth/patient/updatePatient`,
+        { id: user, formData },
+        { headers: { 'Content-Type': 'application/json' } }
+      );
+
+      console.log("Updated Successfully");
+      toast.success("Profile Updated Successfully");
+      console.log(response);
+    } catch (error) {
+      console.error("Error updating patient data:", error);
+      toast.error("Unknown Error Occured");
+    }
+
   };
 
-  const logOutHandler = ()=>{
+  const logOutHandler = () => {
     toast.success("Logged out successfully");
   }
 
   return (
     <div className='flex flex-col m-8'>
       <div className="flex justify-between">
-          <div className='font-bold text-2xl'>
-            Update Profile
-          </div>
-          <Link to="/" type="button" onClick={logOutHandler} className='bg-red-500 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
-              <span>
-                Log Out
-              </span>
-          </Link>
+        <div className='font-bold text-2xl'>
+          Update Profile
+        </div>
+        <Link to="/" type="button" onClick={logOutHandler} className='bg-red-500 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
+          <span>
+            Log Out
+          </span>
+        </Link>
       </div>
 
 
@@ -111,7 +124,7 @@ const Setting = (props) => {
               Patient ID <span className='text-red-400'>*</span>
             </div>
             <input
-            disabled="true"
+              disabled="true"
               required
               type="text"
               name="rollno"
@@ -137,7 +150,7 @@ const Setting = (props) => {
               Last Name <span className='text-red-400'>*</span>
             </div>
             <input
-            disabled="true"
+              disabled="true"
               required
               type="text"
               name="lastName"
@@ -153,7 +166,7 @@ const Setting = (props) => {
               DOB <span className='text-red-400'>*</span>
             </div>
             <input
-            // disabled="true"
+              // disabled="true"
               required
               type="date"
               name="dateOfBirth"
@@ -166,7 +179,7 @@ const Setting = (props) => {
               Gender <span className='text-red-400'>*</span>
             </div>
             <input
-            disabled="true"
+              disabled="true"
               required
               type="text"
               name="gender"
@@ -207,7 +220,7 @@ const Setting = (props) => {
               Email Id <span className='text-red-400'>*</span>
             </div>
             <input
-            disabled="true"
+              disabled="true"
               required
               type="email"
               name="email"

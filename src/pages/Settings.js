@@ -4,7 +4,6 @@ import Navbar from '../components/Navbar';
 import Setting from '../components/Setting';
 
 const Settings = (props) => {
-    const {user,role} = props;
     return (
         <div>
             <Navbar />
@@ -13,7 +12,7 @@ const Settings = (props) => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <Setting user = {user}/>
+                    <Setting />
                 </div>
             </div>
         </div>
