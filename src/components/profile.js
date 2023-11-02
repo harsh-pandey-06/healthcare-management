@@ -68,10 +68,6 @@ const Profile = () => {
         }));
     };
 
-    useEffect(() => {
-        fetchData();
-    }, []);
-
     return (
         <div className='text-[1.2rem]'>
             <div className='mt-5 ml-10 font-bold text-2xl'>

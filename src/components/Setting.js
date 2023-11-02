@@ -58,9 +58,6 @@ const Setting = () => {
     }));
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
@@ -71,11 +68,10 @@ const Setting = () => {
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    console.log("Pringting the form daa: ", formData);
     try {
       const response = await axios.put(
         `http://localhost:4000/api/v1/auth/patient/updatePatient`,
-        { id: user, formData },
+        { id: user.id, formData },
         { headers: { 'Content-Type': 'application/json' } }
       );
 
