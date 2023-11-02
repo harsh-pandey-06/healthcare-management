@@ -3,7 +3,7 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import Setting from '../components/Setting';
 
-const Settings = (props) => {
+const Settings = () => {
     return (
         <div>
             <Navbar />

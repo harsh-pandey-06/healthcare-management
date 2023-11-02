@@ -375,7 +375,7 @@ exports.scheduleLeave = async (req, res) => {
             startHour = 18;
             endHour = 20;
           }
-          const appointmentTime = data.dateOfAppointment?.setHours(startHour, 0);
+          const appointmentTime = new Date(data.dateOfAppointment)?.setHours(startHour, 0);
           if (startTime <= appointmentTime && appointmentTime < endTime) {
             await Appointment.findOneAndUpdate(
               { _id: data._id },
