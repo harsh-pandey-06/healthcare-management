@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const Setting = () => {
   const { user, setUser, getUserFromToken } = UserState();
   const navigate = useNavigate();
-
+  console.log(user);
   useEffect(() => {
     if (!user) {
       getUserFromToken();
@@ -40,14 +40,14 @@ const Setting = () => {
     mobile, dateOfBirth, address, state, city, pincode } = formData;
 
   const fetchData = async () => {
-    const response = await axios.get(`http://localhost:4000/api/v1/auth/patient/getById`, { params: { id: user.id } });
+    const response = await axios.get(`http://localhost:4000/api/v1/auth/${user.role}/getById`, { params: { id: user.id } });
     console.log(response.data.data);
     setFormData((prevData) => ({
       ...prevData,
       firstName: response.data.data.firstName ?? response.data.data.firstname,
       lastName: response.data.data.lastName ?? response.data.data.lastname,
       rollno: response.data.data.rollno,
-      dateOfBirth: response.data.data.dateOfBirth.substr(0, 10),
+      dateOfBirth: response.data.data.dateOfBirth?.substr(0, 10),
       gender: response.data.data.gender,
       bloodGroup: response.data.data.bloodGroup,
       mobile: response.data.data.mobile,

@@ -178,14 +178,15 @@ exports.updateDoctor = async (req, res) => {
 
 exports.getDoctorDetails = async (req, res) => {
   try {
-    const id = req.user.id;
-    const doctorDetails = await Doctor.ById(id);
+    const id = req.query.id;
+    const doctorDetails = await Doctor.findById(id);
     res.status(200).json({
       success: true,
       message: "Doctor data fetched successfully",
       data: doctorDetails,
     })
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: error.message,
