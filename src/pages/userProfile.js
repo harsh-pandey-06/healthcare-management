@@ -1,9 +1,9 @@
 import React from 'react'
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import Setting from '../components/Setting';
+import Profile from '../components/profile'
 
-const Settings = (props) => {
+const UserProfile = (props) => {
     return (
         <div>
             <Navbar />
@@ -12,11 +12,11 @@ const Settings = (props) => {
                     <Sidebar />
                 </div>
                 <div className='w-4/5'>
-                    <Setting />
+                    <Profile />
                 </div>
             </div>
         </div>
     )
 }
 
-export default Settings
+export default UserProfile

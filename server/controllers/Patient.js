@@ -185,23 +185,27 @@ exports.login = async (req, res) => {
 };
 
 exports.updatePatient = async (req, res) => {
+
+  console.log("Printing Req body",req.body);
   try {
+    const {id} = req.body;
     const {
-      firstName = "",
-      lastName = "",
-      email = "",
-      mobile = "",
-      rollno = "",
-      gender = "",
-      dateOfBirth = "",
-      state = "",
-      city = "",
-      pincode = "",
-      id,
-    } = req.body;
-
+      firstName,
+      lastName,
+      email,
+      mobile ,
+      bloodGroup,
+      rollno ,
+      gender ,
+      dateOfBirth ,
+      state ="MyState",
+      city ,
+      pincode ,
+      address
+    } = req.body.formData;
     // Find the profile by id
-
+    console.log(state);
+    console.log(id);
     const patient = await Patient.findByIdAndUpdate(id, {
       firstName,
       lastName,
@@ -212,9 +216,11 @@ exports.updatePatient = async (req, res) => {
       dateOfBirth,
       state,
       city,
+      bloodGroup,
       pincode,
+      address
     });
-    await patient.save();
+    // await patient.save();
 
     const PatientDetails = await Patient.findById(id);
 

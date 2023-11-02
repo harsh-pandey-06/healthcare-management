@@ -1,20 +1,22 @@
-import "./App.css";
-import Chat from "./pages/Chat";
-import Doctor from "./pages/Doctor";
-import Help from "./pages/Help";
-import Home from "./pages/Home";
-import MainHome from "./pages/MainHome";
-import Patient from "./pages/Patient";
-import AddPatient from "./pages/AddPatient";
-import { Routes, Route } from "react-router-dom";
-import Settings from "./pages/Settings";
-import Calendar from "./pages/Calendar";
-import Invoices from "./pages/Invoices";
-import AddAppointment from "./pages/AddAppointment";
-import Login from "./pages/Login";
-import { useState } from "react";
-import Signup from "./pages/Signup";
-import Otp from "./pages/Otp";
+import './App.css';
+import Chat from './pages/Chat';
+import Doctor from './pages/Doctor';
+import Help from './pages/Help';
+import Home from './pages/Home';
+import MainHome from './pages/MainHome';
+import Patient from './pages/Patient';
+import AddPatient from './pages/AddPatient';
+import { Routes, Route } from "react-router-dom"
+import Settings from './pages/Settings';
+import Calendar from './pages/Calendar';
+import Invoices from './pages/Invoices';
+import AddAppointment from './pages/AddAppointment';
+import Login from './pages/Login';
+import { useState } from 'react';
+import Signup from './pages/Signup';
+import UserProfile from './pages/userProfile';
+import Otp from './pages/Otp';
+
 
 function App() {
   const [role, setRole] = useState("patient");
@@ -42,6 +44,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/invoices" element={<Invoices />} />
+        <Route path="/profile" element={<UserProfile role={role} />} />
       </Routes>
     </div>
   );

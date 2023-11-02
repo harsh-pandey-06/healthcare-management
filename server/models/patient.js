@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const patientSchema = new mongoose.Schema({
   rollno: {
     type: String,

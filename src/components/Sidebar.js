@@ -51,11 +51,11 @@ const Sidebar = () => {
                 <span className='text-base'>Settings</span>
             </NavLink>
             {user?.firstname &&
-                <div className={`bg-sky-100 flex justify-between rounded gap-3 items-center px-8 py-4 mx-1 mt-4 cursor-pointer text-blue-500 font-medium text-lg`}>
+                <NavLink to="/profile" className={`bg-sky-100 flex justify-between rounded gap-3 items-center px-8 py-4 mx-1 mt-4 cursor-pointer text-blue-500 font-medium text-lg`}>
                     <AiOutlineUser />
                     <span className='text-base text-slate-800'>{user.firstname}</span>
                     <FaAngleDown className='text-slate-800 text-base' />
-                </div>}
+                </NavLink>}
         </div>
     )
 }

@@ -34,14 +34,6 @@ const Navbar = () => {
                             Appointment
                         </span>
                     </Link>
-
-                    <Link to="/" type="button" className='bg-red-500 flex items-center justify-between gap-2 cursor-pointer text-white px-5 py-3 rounded-lg text-sm font-medium'>
-                        
-                        <span>
-                            Logout
-                        </span>
-                    </Link>
-
                 </div>
             </div>
         </div>

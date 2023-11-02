@@ -5,8 +5,9 @@ const { login, signup ,updatePatient, sendOtp,  getPatientDetails,
 
 router.post("/login", login);
 router.post("/signup", signup);
-router.post("/update", updatePatient);
+// router.post("/update", updatePatient);
 // router.get("/fetchPatients", getAllPatients);
 router.get("/getById", getPatientDetails);
 router.post("/sendOtp",sendOtp);
+router.put("/updatePatient",updatePatient);
 module.exports = router;
