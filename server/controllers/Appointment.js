@@ -157,7 +157,7 @@ exports.getAppointmentDetails = async (req, res) => {
 exports.getAppointmentsByPatientId = async (req, res) => {
   try {
     const patient = req.query.id;
-    const appointmentDetails = await Appointment.find({ patient });
+    const appointmentDetails = await Appointment.find({ patient }).populate("patient").populate("doctor").exec();
     res.status(200).json({
       success: true,
       message: "Appointment data fetched successfully",
@@ -176,6 +176,7 @@ exports.getAppointmentsByDoctorId = async (req, res) => {
     const doctor = req.query.id;
     const appointmentDetails = await Appointment.find({ doctor })
       .populate("patient")
+      .populate("doctor")
       .exec();
     res.status(200).json({
       success: true,

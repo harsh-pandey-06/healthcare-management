@@ -11,11 +11,17 @@ const ListItem = (props) => {
                   slot4to6:"4 P.M. to 6 P.M."};
   return (
     <div className="w-full shadow-xl p-5 rounded-lg">
+      {/* <div>
+        <span className="text-lg font-medium">Patient Name </span>
+        {value.patient.firstName + " " + value.patient.lastName}
+      </div> */}
       <div>
-        <span className="text-lg font-medium">Name: </span>{value.patient.firstName + " " + value.patient.lastName}
+        <span className="text-lg font-medium">Doctor Name </span>
+        {value.doctor?.firstname + " " + value.doctor?.lastname}
       </div>
       <div>
-        <span className="text-lg font-medium">Patient Id: </span>{value.patient.rollno}
+        <span className="text-lg font-medium">Patient Id: </span>
+        {value.patient?.rollno}
       </div>
       <div>
         <span className="text-lg font-medium">Preferred slot: </span>{slotPairs[value.slot]}
@@ -24,7 +30,8 @@ const ListItem = (props) => {
         <span className="text-lg font-medium">Date of Appointment: </span>{dayjs(value.dateOfAppointment).format('D MMM YYYY')}
       </div>
       <div>
-        <span className="text-lg font-medium">Department: </span>{value.department ?? "Not specified"}
+        <span className="text-lg font-medium">Department: </span>
+        {value.department ?? "Not specified"}
       </div>
       <div>
         <span className="text-lg font-medium">Reason: </span>
