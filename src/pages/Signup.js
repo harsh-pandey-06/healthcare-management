@@ -155,15 +155,19 @@ const Signup = () => {
         <div className="flex mb-4 w-10">
           <img src={iitglogo} />
         </div>
-        <div className="capitalize object-scale-down text-gray-950 text-2xl font-semibold">Sign Up</div>
+        <div className="capitalize object-scale-down text-gray-950 text-2xl font-semibold">
+          Sign Up
+        </div>
 
         <div className="mt-4 flex gap-5">
           <div>
-            <p className='select-none	'>First Name <span className='text-red-600'>*</span></p>
+            <p className="select-none	">
+              First Name <span className="text-red-600">*</span>
+            </p>
             <input
               className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
               required
-              placeholder='Enter First Name'
+              placeholder="Enter First Name"
               type="text"
               name="firstName"
               value={firstName}
@@ -172,11 +176,13 @@ const Signup = () => {
           </div>
 
           <div>
-            <p className='select-none	'>Last Name <span className='text-red-600'>*</span></p>
+            <p className="select-none	">
+              Last Name <span className="text-red-600">*</span>
+            </p>
             <input
               className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
               required
-              placeholder='Enter Last Name'
+              placeholder="Enter Last Name"
               type="text"
               name="lastName"
               value={lastName}
@@ -186,86 +192,105 @@ const Signup = () => {
         </div>
 
         <div className="mt-4">
-          <p className='select-none'>Email <span className='text-red-600'>*</span></p>
+          <p className="select-none">
+            Email <span className="text-red-600">*</span>
+          </p>
           <input
             className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
             required
             type="email"
             name="email"
             value={email}
-            placeholder='Enter Your Email'
+            placeholder="Enter Your Email"
             onChange={handleOnChange}
           ></input>
         </div>
 
         <div className="mt-4 flex gap-5">
           <div>
-            <p className='select-none'>Roll No <span className='text-red-600'>*</span></p>
+            <p className="select-none">
+              Roll No <span className="text-red-600">*</span>
+            </p>
             <input
               className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
               required
               type="text"
               name="rollno"
-              placeholder='Enter Roll No'
+              placeholder="Enter Roll No"
               value={rollno}
               onChange={handleOnChange}
             ></input>
           </div>
 
-
           <div>
-            <p className='select-none'> Blood Group <span className='text-red-600'>*</span></p>
-            <input
+            <p className="select-none">
+              {" "}
+              Blood Group <span className="text-red-600">*</span>
+            </p>
+            <select
               className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
               required
               type="text"
               name="bloodGroup"
               value={bloodGroup}
-              placeholder='Enter Blood Group'
+              placeholder="Enter Blood Group"
               onChange={handleOnChange}
-            ></input>
+            >
+              <option value="none">Select</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
           </div>
-
         </div>
 
-
         <div className="mt-4">
-          <p className='select-none'>Mobile No.<span className='text-red-600'>*</span></p>
+          <p className="select-none">
+            Mobile No.<span className="text-red-600">*</span>
+          </p>
           <input
             className=" mt-2 select-none border border-gray-600 p-2 rounded w-full"
             required
             type="text"
             name="mobile"
             value={mobile}
-            placeholder='Enter Mobile No.'
+            placeholder="Enter Mobile No."
             onChange={handleOnChange}
           ></input>
         </div>
 
         <div className="mt-4 flex gap-5">
-
           <div>
-            <p className='select-none'>Date Of Birth <span className='text-red-600'>*</span></p>
+            <p className="select-none">
+              Date Of Birth <span className="text-red-600">*</span>
+            </p>
             <input
               className=" mt-2 select-none border border-gray-600 p-2 px-7 rounded w-full"
               required
               type="date"
               name="dateOfBirth"
               value={dateOfBirth}
-              placeholder='Enter Blood Group'
+              placeholder="Enter Blood Group"
               onChange={handleOnChange}
             ></input>
           </div>
 
           <div>
-            <p className='select-none'>Gender <span className='text-red-600'>*</span></p>
+            <p className="select-none">
+              Gender <span className="text-red-600">*</span>
+            </p>
             <select
               className=" mt-2 select-none border border-gray-600 p-2 px-14  rounded w-full"
               required
               type="text"
               name="gender"
               value={gender}
-              placeholder='Male/Female/Others'
+              placeholder="Male/Female/Others"
               onChange={handleOnChange}
             >
               <option value="none">Select</option>
@@ -274,12 +299,13 @@ const Signup = () => {
               <option value="others">Others</option>
             </select>
           </div>
-
         </div>
 
         <div className="mt-4  flex gap-5">
-          <div className='relative'>
-            <p className='select-none'>Password<span className='text-red-600'>*</span></p>
+          <div className="relative">
+            <p className="select-none">
+              Password<span className="text-red-600">*</span>
+            </p>
             <div
               onClick={() => setshowPassword(!showPassword)}
               className="absolute cursor-pointer top-10 right-2  text-2xl"
@@ -295,15 +321,16 @@ const Signup = () => {
               required
               type={showPassword === false ? "password" : "text"}
               name="password"
-              placeholder='Enter Password'
+              placeholder="Enter Password"
               value={password}
               onChange={handleOnChange}
             ></input>
           </div>
 
-
-          <div className='relative'>
-            <p className='select-none'>Confirm Password<span className='text-red-600'>*</span></p>
+          <div className="relative">
+            <p className="select-none">
+              Confirm Password<span className="text-red-600">*</span>
+            </p>
             <div
               onClick={() => setshowConfirmPassword(!showConfirmPassword)}
               className="absolute cursor-pointer top-10 right-2  text-2xl"
@@ -320,24 +347,25 @@ const Signup = () => {
               type={showConfirmPassword === false ? "password" : "text"}
               name="confirmPassword"
               value={confirmPassword}
-              placeholder='Confirm Password'
+              placeholder="Confirm Password"
               onChange={handleOnChange}
             ></input>
           </div>
-
         </div>
 
-        <p className='select-none mt-4'>Enter OTP<span className='text-red-600'>*</span></p>
+        <p className="select-none mt-4">
+          Enter OTP<span className="text-red-600">*</span>
+        </p>
         <input
           className=" mt-2 select-none border border-gray-600 rounded p-2 w-full"
           required
           type="text"
           name="otp"
           value={otp}
-          placeholder='Enter OTP'
+          placeholder="Enter OTP"
           onChange={handleOnChangeOTP}
         ></input>
-        <div className='flex justify-end'>
+        <div className="flex justify-end">
           <button
             type="button"
             className=" mt-2 mr-1 cursor-pointer text-grayblack-600 p-1 rounded-lg text font-medium "
@@ -347,17 +375,16 @@ const Signup = () => {
           </button>
         </div>
 
-        <div className='flex justify-center'>
+        <div className="flex justify-center">
           <button
             type="button"
-            className="bg-blue-500 mt-5 cursor-pointer text-white px-10 py-3 rounded-lg text-sm font-medium" onClick={submitHandler}
+            className="bg-blue-500 mt-5 cursor-pointer text-white px-10 py-3 rounded-lg text-sm font-medium"
+            onClick={submitHandler}
           >
             Sign Up
           </button>
         </div>
-
       </div>
-
     </div>
   );
 }

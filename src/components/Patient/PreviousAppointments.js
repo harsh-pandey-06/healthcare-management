@@ -4,8 +4,8 @@ import axios from 'axios';
 import ListItem from '../Appointment/ListItem';
 import dayjs from 'dayjs';
 
-function checkDate(allData) {
-  return allData.dateOfAppointment <= Date.now() - 86400;
+function checkDate(data) {
+  return new Date(data.dateOfAppointment).getTime() <= Date.now() - 86400000;
 }
 
 const PreviousAppointments = () => {
@@ -81,6 +81,6 @@ const PreviousAppointments = () => {
       }
     </div>
   );
-}
+};
 
-export default PreviousAppointments
+export default PreviousAppointments;
