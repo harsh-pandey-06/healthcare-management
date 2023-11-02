@@ -186,21 +186,21 @@ exports.login = async (req, res) => {
 
 exports.updatePatient = async (req, res) => {
 
-  console.log("Printing Req body",req.body);
+  console.log("Printing Req body", req.body);
   try {
-    const {id} = req.body;
+    const { id } = req.body;
     const {
       firstName,
       lastName,
       email,
-      mobile ,
+      mobile,
       bloodGroup,
-      rollno ,
-      gender ,
-      dateOfBirth ,
-      state ="MyState",
-      city ,
-      pincode ,
+      rollno,
+      gender,
+      dateOfBirth,
+      state = "MyState",
+      city,
+      pincode,
       address
     } = req.body.formData;
     // Find the profile by id
